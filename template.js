@@ -23,8 +23,9 @@ const eventDataOverride = makeOverrideTableMap(data.eventData);
 const userIdsOverride = makeOverrideTableMap(data.userIds);
 const userInfoOverride = makeOverrideTableMap(data.userInfo);
 
-let postUrl = getRequestUrl();
+const postUrl = getRequestUrl();
 const postBody = getPostBody();
+const postHeaders = getRequestHeaders();
 
 if (isLoggingEnabled) {
   logToConsole(
@@ -35,7 +36,7 @@ if (isLoggingEnabled) {
       EventName: postBody.eventId,
       RequestMethod: 'POST',
       RequestUrl: postUrl,
-      RequestBody: postBody,
+      RequestBody: postBody
     })
   );
 }
@@ -52,7 +53,7 @@ sendHttpRequest(
           EventName: postBody.eventId,
           ResponseStatusCode: statusCode,
           ResponseHeaders: headers,
-          ResponseBody: body,
+          ResponseBody: body
         })
       );
     }
@@ -64,15 +65,16 @@ sendHttpRequest(
     }
   },
   {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
+    headers: postHeaders,
+    method: 'POST'
   },
   JSON.stringify(postBody)
 );
 
 function getRequestUrl() {
+  if (data.gmtHostingProvider !== 'stape') {
+    return 'https://api.linkedin.com/rest/conversionEvents';
+  }
   const containerKey = data.containerKey.split(':');
   const containerZone = containerKey[0];
   const containerIdentifier = containerKey[1];
@@ -91,6 +93,20 @@ function getRequestUrl() {
   );
 }
 
+function getRequestHeaders() {
+  if (data.gmtHostingProvider === 'stape') {
+    return {
+      'Content-Type': 'application/json'
+    };
+  }
+  return {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + data.accessToken,
+    'LinkedIn-Version': '202304',
+    'X-Restli-Protocol-Version': '2.0.0'
+  };
+}
+
 function getPostBody() {
   return {
     conversion: getConversionRuleUrn(),
@@ -99,8 +115,8 @@ function getPostBody() {
     eventId: getEventId(),
     user: {
       userIds: getUserIds(),
-      userInfo: getUserInfo(),
-    },
+      userInfo: getUserInfo()
+    }
   };
 }
 
@@ -132,7 +148,7 @@ function getConversionValue() {
   const amount = eventDataOverride.amount || eventData.value || itemsValue;
   return {
     currencyCode: currencyCode,
-    amount: makeString(amount),
+    amount: makeString(amount)
   };
 }
 
@@ -146,20 +162,20 @@ function getUserIds() {
   const userIds = [
     {
       idType: 'SHA256_EMAIL',
-      idValue: hashData(getUserEmail()),
+      idValue: hashData(getUserEmail())
     },
     {
       idType: 'LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID',
-      idValue: getLinkedInFirstPartyAdsTrackingUuid(),
+      idValue: getLinkedInFirstPartyAdsTrackingUuid()
     },
     {
       idType: 'ACXIOM_ID',
-      idValue: getAcxiomId(),
+      idValue: getAcxiomId()
     },
     {
       idType: 'ORACLE_MOAT_ID',
-      idValue: getOracleMoatId(),
-    },
+      idValue: getOracleMoatId()
+    }
   ];
 
   return userIds.filter((userId) => userId.idValue);
@@ -168,7 +184,7 @@ function getUserIds() {
 function getUserIdFactory(idType, getIdValue) {
   return {
     idType: idType,
-    idValue: getIdValue,
+    idValue: getIdValue
   };
 }
 
@@ -260,7 +276,7 @@ function getUserInfo() {
     lastName: getUserLastName(),
     title: getUserJobTitle(),
     companyName: getUserCompanyName(),
-    countryCode: getUserCountryCode(),
+    countryCode: getUserCountryCode()
   };
 }
 

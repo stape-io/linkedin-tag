@@ -39,7 +39,33 @@ ___TEMPLATE_PARAMETERS___
         "type": "NON_EMPTY"
       }
     ],
-    "help": "It can be found in the detailed view of the container inside your \u003ca href\u003d\"https://app.stape.io/container/\" target\u003d\"_blank\"\u003eStape account\u003c/a\u003e.\n\u003cbr\u003e\u003cbr\u003e\nBecause of how LinkedIn Conversion API authentication works, it can\u0027t be fully functional on sGTM. That\u0027s why this tag requires working on \u003ca href\u003d\"https://stape.io/gtm-server-hosting\" target\u003d\"_blank\"\u003eStape hosting\u003c/a\u003e.\n\u003cbr\u003e\nIf it will be possible in the future to use only sGTM for authentication we will update this tag to support any hosting."
+    "help": "It can be found in the detailed view of the container inside your \u003ca href\u003d\"https://app.stape.io/container/\" target\u003d\"_blank\"\u003eStape account\u003c/a\u003e.\n\u003cbr\u003e\u003cbr\u003e\nBecause of how LinkedIn Conversion API authentication works, it can\u0027t be fully functional on sGTM. That\u0027s why this tag requires working on \u003ca href\u003d\"https://stape.io/gtm-server-hosting\" target\u003d\"_blank\"\u003eStape hosting\u003c/a\u003e.\n\u003cbr\u003e\nIf it will be possible in the future to use only sGTM for authentication we will update this tag to support any hosting.",
+    "enablingConditions": [
+      {
+        "paramName": "gmtHostingProvider",
+        "paramValue": "stape",
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "TEXT",
+    "name": "accessToken",
+    "displayName": "Access Token",
+    "simpleValueType": true,
+    "help": "LinkedIn OAuth access token \u003ca href\u003d\"https://learn.microsoft.com/en-us/linkedin/shared/authentication/postman-getting-started?view\u003dli-lms-2023-10\"\u003eLearn more\u003c/a\u003e",
+    "valueValidators": [
+      {
+        "type": "NON_EMPTY"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "gmtHostingProvider",
+        "paramValue": "stape",
+        "type": "NOT_EQUALS"
+      }
+    ]
   },
   {
     "type": "TEXT",
@@ -268,8 +294,9 @@ const eventDataOverride = makeOverrideTableMap(data.eventData);
 const userIdsOverride = makeOverrideTableMap(data.userIds);
 const userInfoOverride = makeOverrideTableMap(data.userInfo);
 
-let postUrl = getRequestUrl();
+const postUrl = getRequestUrl();
 const postBody = getPostBody();
+const postHeaders = getRequestHeaders();
 
 if (isLoggingEnabled) {
   logToConsole(
@@ -280,7 +307,7 @@ if (isLoggingEnabled) {
       EventName: postBody.eventId,
       RequestMethod: 'POST',
       RequestUrl: postUrl,
-      RequestBody: postBody,
+      RequestBody: postBody
     })
   );
 }
@@ -297,7 +324,7 @@ sendHttpRequest(
           EventName: postBody.eventId,
           ResponseStatusCode: statusCode,
           ResponseHeaders: headers,
-          ResponseBody: body,
+          ResponseBody: body
         })
       );
     }
@@ -309,15 +336,16 @@ sendHttpRequest(
     }
   },
   {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: 'POST',
+    headers: postHeaders,
+    method: 'POST'
   },
   JSON.stringify(postBody)
 );
 
 function getRequestUrl() {
+  if (data.gmtHostingProvider !== 'stape') {
+    return 'https://api.linkedin.com/rest/conversionEvents';
+  }
   const containerKey = data.containerKey.split(':');
   const containerZone = containerKey[0];
   const containerIdentifier = containerKey[1];
@@ -336,6 +364,20 @@ function getRequestUrl() {
   );
 }
 
+function getRequestHeaders() {
+  if (data.gmtHostingProvider === 'stape') {
+    return {
+      'Content-Type': 'application/json'
+    };
+  }
+  return {
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + data.accessToken,
+    'LinkedIn-Version': '202304',
+    'X-Restli-Protocol-Version': '2.0.0'
+  };
+}
+
 function getPostBody() {
   return {
     conversion: getConversionRuleUrn(),
@@ -344,8 +386,8 @@ function getPostBody() {
     eventId: getEventId(),
     user: {
       userIds: getUserIds(),
-      userInfo: getUserInfo(),
-    },
+      userInfo: getUserInfo()
+    }
   };
 }
 
@@ -377,7 +419,7 @@ function getConversionValue() {
   const amount = eventDataOverride.amount || eventData.value || itemsValue;
   return {
     currencyCode: currencyCode,
-    amount: makeString(amount),
+    amount: makeString(amount)
   };
 }
 
@@ -391,20 +433,20 @@ function getUserIds() {
   const userIds = [
     {
       idType: 'SHA256_EMAIL',
-      idValue: hashData(getUserEmail()),
+      idValue: hashData(getUserEmail())
     },
     {
       idType: 'LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID',
-      idValue: getLinkedInFirstPartyAdsTrackingUuid(),
+      idValue: getLinkedInFirstPartyAdsTrackingUuid()
     },
     {
       idType: 'ACXIOM_ID',
-      idValue: getAcxiomId(),
+      idValue: getAcxiomId()
     },
     {
       idType: 'ORACLE_MOAT_ID',
-      idValue: getOracleMoatId(),
-    },
+      idValue: getOracleMoatId()
+    }
   ];
 
   return userIds.filter((userId) => userId.idValue);
@@ -413,7 +455,7 @@ function getUserIds() {
 function getUserIdFactory(idType, getIdValue) {
   return {
     idType: idType,
-    idValue: getIdValue,
+    idValue: getIdValue
   };
 }
 
@@ -505,7 +547,7 @@ function getUserInfo() {
     lastName: getUserLastName(),
     title: getUserJobTitle(),
     companyName: getUserCompanyName(),
-    countryCode: getUserCountryCode(),
+    countryCode: getUserCountryCode()
   };
 }
 
@@ -733,6 +775,10 @@ ___SERVER_PERMISSIONS___
               {
                 "type": 1,
                 "string": "https://*.stape.net/*"
+              },
+              {
+                "type": 1,
+                "string": "https://api.linkedin.com/rest/conversionEvents"
               }
             ]
           }
