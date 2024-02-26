@@ -1,4 +1,6 @@
 homepage: 'https://stape.io/'
 versions:
+  - sha: ab0b14b682472f6a87d2ec1f50043efc84a00c60
+    changeNotes: Added support for li_fat_id cookie.
   - sha: 03a1368289395fb6f51c26af0b76a47aa973e454
     changeNotes: Initial release.
