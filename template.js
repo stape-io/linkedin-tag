@@ -12,6 +12,8 @@ const getTimestampMillis = require('getTimestampMillis');
 const Math = require('Math');
 const makeNumber = require('makeNumber');
 const makeTableMap = require('makeTableMap');
+const getCookieValues = require('getCookieValues');
+const decodeUriComponent = require('decodeUriComponent');
 
 const isLoggingEnabled = determinateIsLoggingEnabled();
 const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
@@ -199,8 +201,12 @@ function getUserEmail() {
 }
 
 function getLinkedInFirstPartyAdsTrackingUuid() {
+  const liFatId = decodeUriComponent(getCookieValues('li_fat_id')[0] || '');
   return (
-    userIdsOverride.linkedinFirstPartyId || user_data.linkedinFirstPartyId || ''
+    liFatId ||
+    userIdsOverride.linkedinFirstPartyId ||
+    user_data.linkedinFirstPartyId ||
+    ''
   );
 }
 

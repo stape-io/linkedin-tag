@@ -133,9 +133,13 @@ ___TEMPLATE_PARAMETERS___
   {
     "displayName": "User Ids Override",
     "name": "userIdsGroup",
-    "groupStyle": "ZIPPY_CLOSED",
     "type": "GROUP",
     "subParams": [
+      {
+        "type": "LABEL",
+        "name": "userIdsLabel",
+        "displayName": "Tag will attempt to parse cookie/event data but you can provide those parameter explicitly, at least one identifier is needed for a successful request."
+      },
       {
         "name": "userIds",
         "simpleTableColumns": [
@@ -179,7 +183,8 @@ ___TEMPLATE_PARAMETERS___
         "type": "SIMPLE_TABLE",
         "newRowButtonText": "Add property"
       }
-    ]
+    ],
+    "groupStyle": "ZIPPY_CLOSED"
   },
   {
     "displayName": "User Info Override",
@@ -283,6 +288,8 @@ const getTimestampMillis = require('getTimestampMillis');
 const Math = require('Math');
 const makeNumber = require('makeNumber');
 const makeTableMap = require('makeTableMap');
+const getCookieValues = require('getCookieValues');
+const decodeUriComponent = require('decodeUriComponent');
 
 const isLoggingEnabled = determinateIsLoggingEnabled();
 const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
@@ -470,8 +477,12 @@ function getUserEmail() {
 }
 
 function getLinkedInFirstPartyAdsTrackingUuid() {
+  const liFatId = decodeUriComponent(getCookieValues('li_fat_id')[0] || '');
   return (
-    userIdsOverride.linkedinFirstPartyId || user_data.linkedinFirstPartyId || ''
+    liFatId ||
+    userIdsOverride.linkedinFirstPartyId ||
+    user_data.linkedinFirstPartyId ||
+    ''
   );
 }
 
@@ -779,6 +790,39 @@ ___SERVER_PERMISSIONS___
               {
                 "type": 1,
                 "string": "https://api.linkedin.com/rest/conversionEvents"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "get_cookies",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "cookieAccess",
+          "value": {
+            "type": 1,
+            "string": "specific"
+          }
+        },
+        {
+          "key": "cookieNames",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "li_fat_id"
               }
             ]
           }
