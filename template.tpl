@@ -31,39 +31,13 @@ ___TEMPLATE_PARAMETERS___
 [
   {
     "type": "TEXT",
-    "name": "containerKey",
-    "displayName": "Stape Container API Key",
-    "simpleValueType": true,
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "help": "It can be found in the detailed view of the container inside your \u003ca href\u003d\"https://app.stape.io/container/\" target\u003d\"_blank\"\u003eStape account\u003c/a\u003e.\n\u003cbr\u003e\u003cbr\u003e\nBecause of how LinkedIn Conversion API authentication works, it can\u0027t be fully functional on sGTM. That\u0027s why this tag requires working on \u003ca href\u003d\"https://stape.io/gtm-server-hosting\" target\u003d\"_blank\"\u003eStape hosting\u003c/a\u003e.\n\u003cbr\u003e\nIf it will be possible in the future to use only sGTM for authentication we will update this tag to support any hosting.",
-    "enablingConditions": [
-      {
-        "paramName": "gmtHostingProvider",
-        "paramValue": "stape",
-        "type": "EQUALS"
-      }
-    ]
-  },
-  {
-    "type": "TEXT",
     "name": "accessToken",
     "displayName": "Access Token",
     "simpleValueType": true,
-    "help": "LinkedIn OAuth access token \u003ca href\u003d\"https://learn.microsoft.com/en-us/linkedin/shared/authentication/postman-getting-started?view\u003dli-lms-2023-10\"\u003eLearn more\u003c/a\u003e",
+    "help": "LinkedIn API access token \u003ca href\u003d\"https://www.linkedin.com/help/lms/answer/a1718034\"\u003eLearn more\u003c/a\u003e",
     "valueValidators": [
       {
         "type": "NON_EMPTY"
-      }
-    ],
-    "enablingConditions": [
-      {
-        "paramName": "gmtHostingProvider",
-        "paramValue": "stape",
-        "type": "NOT_EQUALS"
       }
     ]
   },
@@ -350,33 +324,10 @@ sendHttpRequest(
 );
 
 function getRequestUrl() {
-  if (data.gmtHostingProvider !== 'stape') {
-    return 'https://api.linkedin.com/rest/conversionEvents';
-  }
-  const containerKey = data.containerKey.split(':');
-  const containerZone = containerKey[0];
-  const containerIdentifier = containerKey[1];
-  const containerApiKey = containerKey[2];
-  const containerDefaultDomainEnd = containerKey[3] || 'io';
-  return (
-    'https://' +
-    enc(containerIdentifier) +
-    '.' +
-    enc(containerZone) +
-    '.stape.' +
-    enc(containerDefaultDomainEnd) +
-    '/stape-api/' +
-    enc(containerApiKey) +
-    '/v1/linkedin/auth-proxy'
-  );
+  return 'https://api.linkedin.com/rest/conversionEvents';
 }
 
 function getRequestHeaders() {
-  if (data.gmtHostingProvider === 'stape') {
-    return {
-      'Content-Type': 'application/json'
-    };
-  }
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
@@ -779,14 +730,6 @@ ___SERVER_PERMISSIONS___
           "value": {
             "type": 2,
             "listItem": [
-              {
-                "type": 1,
-                "string": "https://*.stape.io/*"
-              },
-              {
-                "type": 1,
-                "string": "https://*.stape.net/*"
-              },
               {
                 "type": 1,
                 "string": "https://api.linkedin.com/rest/conversionEvents"

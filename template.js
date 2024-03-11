@@ -74,33 +74,10 @@ sendHttpRequest(
 );
 
 function getRequestUrl() {
-  if (data.gmtHostingProvider !== 'stape') {
-    return 'https://api.linkedin.com/rest/conversionEvents';
-  }
-  const containerKey = data.containerKey.split(':');
-  const containerZone = containerKey[0];
-  const containerIdentifier = containerKey[1];
-  const containerApiKey = containerKey[2];
-  const containerDefaultDomainEnd = containerKey[3] || 'io';
-  return (
-    'https://' +
-    enc(containerIdentifier) +
-    '.' +
-    enc(containerZone) +
-    '.stape.' +
-    enc(containerDefaultDomainEnd) +
-    '/stape-api/' +
-    enc(containerApiKey) +
-    '/v1/linkedin/auth-proxy'
-  );
+  return 'https://api.linkedin.com/rest/conversionEvents';
 }
 
 function getRequestHeaders() {
-  if (data.gmtHostingProvider === 'stape') {
-    return {
-      'Content-Type': 'application/json'
-    };
-  }
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
