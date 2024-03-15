@@ -1,5 +1,7 @@
 homepage: 'https://stape.io/'
 versions:
+  - sha: bc7a5088976da3a828500f4a978e25401b80609a
+    changeNotes: Added Page View event type.
   - sha: 991d3c20627eb30dc9f059e64668e34e4125a352
     changeNotes: Update Access Token help link.
   - sha: ab0b14b682472f6a87d2ec1f50043efc84a00c60
