@@ -30,6 +30,24 @@ ___TEMPLATE_PARAMETERS___
 
 [
   {
+    "type": "RADIO",
+    "name": "type",
+    "displayName": "Event Type",
+    "radioItems": [
+      {
+        "value": "page_view",
+        "displayValue": "Page View"
+      },
+      {
+        "value": "conversion",
+        "displayValue": "Conversion"
+      }
+    ],
+    "simpleValueType": true,
+    "help": "\u003cb\u003ePage View\u003c/b\u003e - stores the li_fat_id URL parameter inside the li_fat_id cookie\u003cbr\u003e\u003cbr\u003e \u003cb\u003eConversion\u003c/b\u003e - Send request with data about the conversion to the LinkedIn",
+    "defaultValue": "conversion"
+  },
+  {
     "type": "TEXT",
     "name": "accessToken",
     "displayName": "Access Token",
@@ -38,6 +56,13 @@ ___TEMPLATE_PARAMETERS___
     "valueValidators": [
       {
         "type": "NON_EMPTY"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "type",
+        "paramValue": "conversion",
+        "type": "EQUALS"
       }
     ]
   },
@@ -49,6 +74,13 @@ ___TEMPLATE_PARAMETERS___
     "valueValidators": [
       {
         "type": "NON_EMPTY"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "type",
+        "paramValue": "conversion",
+        "type": "EQUALS"
       }
     ]
   },
@@ -101,6 +133,13 @@ ___TEMPLATE_PARAMETERS___
         "type": "SIMPLE_TABLE",
         "newRowButtonText": "Add property",
         "valueValidators": []
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "type",
+        "paramValue": "conversion",
+        "type": "EQUALS"
       }
     ]
   },
@@ -158,7 +197,14 @@ ___TEMPLATE_PARAMETERS___
         "newRowButtonText": "Add property"
       }
     ],
-    "groupStyle": "ZIPPY_CLOSED"
+    "groupStyle": "ZIPPY_CLOSED",
+    "enablingConditions": [
+      {
+        "paramName": "type",
+        "paramValue": "conversion",
+        "type": "EQUALS"
+      }
+    ]
   },
   {
     "displayName": "User Info Override",
@@ -213,6 +259,13 @@ ___TEMPLATE_PARAMETERS___
         "type": "SIMPLE_TABLE",
         "newRowButtonText": "Add property"
       }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "type",
+        "paramValue": "conversion",
+        "type": "EQUALS"
+      }
     ]
   },
   {
@@ -264,11 +317,37 @@ const makeNumber = require('makeNumber');
 const makeTableMap = require('makeTableMap');
 const getCookieValues = require('getCookieValues');
 const decodeUriComponent = require('decodeUriComponent');
+const parseUrl = require('parseUrl');
+const setCookie = require('setCookie');
 
 const isLoggingEnabled = determinateIsLoggingEnabled();
 const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
+const cookieName = 'li_fat_id';
 
 const eventData = getAllEventData();
+
+if (data.type === 'page_view') {
+  const url = eventData.page_location || getRequestHeader('referer');
+
+  if (url) {
+    const value = parseUrl(url).searchParams[cookieName];
+
+    if (value) {
+      const options = {
+        domain: 'auto',
+        path: '/',
+        secure: true,
+        httpOnly: false,
+        'max-age': 86400 * 90
+      };
+
+      setCookie(cookieName, value, options, false);
+    }
+  }
+
+  return data.gtmOnSuccess();
+}
+
 const user_data = eventData.user_data || {};
 const user_address = user_data.address || {};
 const eventDataOverride = makeOverrideTableMap(data.eventData);
@@ -428,7 +507,7 @@ function getUserEmail() {
 }
 
 function getLinkedInFirstPartyAdsTrackingUuid() {
-  const liFatId = decodeUriComponent(getCookieValues('li_fat_id')[0] || '');
+  const liFatId = decodeUriComponent(getCookieValues(cookieName)[0] || '');
   return (
     liFatId ||
     userIdsOverride.linkedinFirstPartyId ||
@@ -766,6 +845,75 @@ ___SERVER_PERMISSIONS___
               {
                 "type": 1,
                 "string": "li_fat_id"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "set_cookies",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "allowedCookies",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 3,
+                "mapKey": [
+                  {
+                    "type": 1,
+                    "string": "name"
+                  },
+                  {
+                    "type": 1,
+                    "string": "domain"
+                  },
+                  {
+                    "type": 1,
+                    "string": "path"
+                  },
+                  {
+                    "type": 1,
+                    "string": "secure"
+                  },
+                  {
+                    "type": 1,
+                    "string": "session"
+                  }
+                ],
+                "mapValue": [
+                  {
+                    "type": 1,
+                    "string": "li_fat_id"
+                  },
+                  {
+                    "type": 1,
+                    "string": "*"
+                  },
+                  {
+                    "type": 1,
+                    "string": "*"
+                  },
+                  {
+                    "type": 1,
+                    "string": "any"
+                  },
+                  {
+                    "type": 1,
+                    "string": "any"
+                  }
+                ]
               }
             ]
           }

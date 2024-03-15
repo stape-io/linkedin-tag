@@ -14,11 +14,37 @@ const makeNumber = require('makeNumber');
 const makeTableMap = require('makeTableMap');
 const getCookieValues = require('getCookieValues');
 const decodeUriComponent = require('decodeUriComponent');
+const parseUrl = require('parseUrl');
+const setCookie = require('setCookie');
 
 const isLoggingEnabled = determinateIsLoggingEnabled();
 const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
+const cookieName = 'li_fat_id';
 
 const eventData = getAllEventData();
+
+if (data.type === 'page_view') {
+  const url = eventData.page_location || getRequestHeader('referer');
+
+  if (url) {
+    const value = parseUrl(url).searchParams[cookieName];
+
+    if (value) {
+      const options = {
+        domain: 'auto',
+        path: '/',
+        secure: true,
+        httpOnly: false,
+        'max-age': 86400 * 90
+      };
+
+      setCookie(cookieName, value, options, false);
+    }
+  }
+
+  return data.gtmOnSuccess();
+}
+
 const user_data = eventData.user_data || {};
 const user_address = user_data.address || {};
 const eventDataOverride = makeOverrideTableMap(data.eventData);
@@ -178,7 +204,7 @@ function getUserEmail() {
 }
 
 function getLinkedInFirstPartyAdsTrackingUuid() {
-  const liFatId = decodeUriComponent(getCookieValues('li_fat_id')[0] || '');
+  const liFatId = decodeUriComponent(getCookieValues(cookieName)[0] || '');
   return (
     liFatId ||
     userIdsOverride.linkedinFirstPartyId ||
