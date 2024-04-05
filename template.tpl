@@ -445,7 +445,7 @@ function getConversionValue() {
   const hasItems = getType(eventData.items) === 'array' && !!eventData.items[0];
   const itemsCurrency = hasItems ? eventData.items[0].currency : 'NA?';
   const itemsValue = hasItems
-    ? eventData.items[0].reduce((acc, item) => {
+    ? eventData.items.reduce((acc, item) => {
         const price = item.price || 0;
         const quantity = item.quantity || 1;
         return acc + price * quantity;
@@ -936,5 +936,3 @@ scenarios: []
 ___NOTES___
 
 Created on 18/08/2022, 12:25:26
-
-
