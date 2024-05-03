@@ -372,35 +372,64 @@ if (isLoggingEnabled) {
   );
 }
 
-sendHttpRequest(
-  postUrl,
-  (statusCode, headers, body) => {
-    if (isLoggingEnabled) {
-      logToConsole(
-        JSON.stringify({
-          Name: 'LinkedIn',
-          Type: 'Response',
-          TraceId: traceId,
-          EventName: postBody.eventId,
-          ResponseStatusCode: statusCode,
-          ResponseHeaders: headers,
-          ResponseBody: body
-        })
-      );
-    }
+// perform validation check on presence of 1/4 of the required IDs. If at least 1 ID is present, make the API call. If no IDs are present, log the warning and no call is made
+if (validateUserData()){
+  sendConversionToLinkedIn();
+} else {
+  if (isLoggingEnabled) {
+    logToConsole({
+      Name: 'LinkedIn',
+      Type: 'Message',
+      TraceId: traceId,
+      EventName: postBody.eventId,
+      Message: 'No conversion event was sent to LinkedIn CAPI.',
+      Reason: 'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.',
+    });
+  }
 
-    if (statusCode >= 200 && statusCode < 300) {
-      data.gtmOnSuccess();
-    } else {
-      data.gtmOnFailure();
-    }
-  },
-  {
-    headers: postHeaders,
-    method: 'POST'
-  },
-  JSON.stringify(postBody)
-);
+  data.gtmOnFailure();
+}
+
+function validateUserData() {
+  if (postBody.user.userIds.length > 0) {
+    return true;
+  }
+
+  return postBody.user.userInfo.firstName && postBody.user.userInfo.lastName;
+}
+
+
+function sendConversionToLinkedIn() {
+  sendHttpRequest(
+    postUrl,
+    (statusCode, headers, body) => {
+      if (isLoggingEnabled) {
+        logToConsole(
+          JSON.stringify({
+            Name: 'LinkedIn',
+            Type: 'Response',
+            TraceId: traceId,
+            EventName: postBody.eventId,
+            ResponseStatusCode: statusCode,
+            ResponseHeaders: headers,
+            ResponseBody: body
+          })
+        );
+      }
+
+      if (statusCode >= 200 && statusCode < 300) {
+        data.gtmOnSuccess();
+      } else {
+        data.gtmOnFailure();
+      }
+    },
+    {
+      headers: postHeaders,
+      method: 'POST'
+    },
+    JSON.stringify(postBody)
+  );
+}
 
 function getRequestUrl() {
   return 'https://api.linkedin.com/rest/conversionEvents';
