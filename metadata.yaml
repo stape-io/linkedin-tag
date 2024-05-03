@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: "https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager"
 versions:
+  - sha: e0ba0b77bfd8babb3a06af001ac9df71bed9721e
+    changeNotes: Prevent bad requests by adding validation.
   - sha: 2db5572f70d293e1be65f231be5e65a4445eeb36
     changeNotes: Fix Object.reduce is not a method.
   - sha: bc7a5088976da3a828500f4a978e25401b80609a
