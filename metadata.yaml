@@ -1,4 +1,5 @@
 homepage: 'https://stape.io/'
+documentation: "https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager"
 versions:
   - sha: 2db5572f70d293e1be65f231be5e65a4445eeb36
     changeNotes: Fix Object.reduce is not a method.
