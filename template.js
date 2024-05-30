@@ -70,7 +70,7 @@ if (isLoggingEnabled) {
 }
 
 // perform validation check on presence of 1/4 of the required IDs. If at least 1 ID is present, make the API call. If no IDs are present, log the warning and no call is made
-if (validateUserData()){
+if (validateUserData()) {
   sendConversionToLinkedIn();
 } else {
   if (isLoggingEnabled) {
@@ -80,7 +80,8 @@ if (validateUserData()){
       TraceId: traceId,
       EventName: postBody.eventId,
       Message: 'No conversion event was sent to LinkedIn CAPI.',
-      Reason: 'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.',
+      Reason:
+        'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.'
     });
   }
 
@@ -94,7 +95,6 @@ function validateUserData() {
 
   return postBody.user.userInfo.firstName && postBody.user.userInfo.lastName;
 }
-
 
 function sendConversionToLinkedIn() {
   sendHttpRequest(
@@ -136,7 +136,7 @@ function getRequestHeaders() {
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
-    'LinkedIn-Version': '202304',
+    'LinkedIn-Version': '202307',
     'X-Restli-Protocol-Version': '2.0.0'
   };
 }
