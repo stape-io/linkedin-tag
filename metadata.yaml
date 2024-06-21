@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: "https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager"
 versions:
+  - sha: fd368e01b863881794c62752d9da0a138c2f8ddd
+    changeNotes: Linkedin Marketing June 2024.
   - sha: 97210adfaf94ca8c16f4f44a7c2809510bbc9aea
     changeNotes: Update LinkedIn Version.
   - sha: e0ba0b77bfd8babb3a06af001ac9df71bed9721e
