@@ -373,7 +373,7 @@ if (isLoggingEnabled) {
 }
 
 // perform validation check on presence of 1/4 of the required IDs. If at least 1 ID is present, make the API call. If no IDs are present, log the warning and no call is made
-if (validateUserData()){
+if (validateUserData()) {
   sendConversionToLinkedIn();
 } else {
   if (isLoggingEnabled) {
@@ -383,7 +383,8 @@ if (validateUserData()){
       TraceId: traceId,
       EventName: postBody.eventId,
       Message: 'No conversion event was sent to LinkedIn CAPI.',
-      Reason: 'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.',
+      Reason:
+        'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.'
     });
   }
 
@@ -397,7 +398,6 @@ function validateUserData() {
 
   return postBody.user.userInfo.firstName && postBody.user.userInfo.lastName;
 }
-
 
 function sendConversionToLinkedIn() {
   sendHttpRequest(
@@ -445,16 +445,18 @@ function getRequestHeaders() {
 }
 
 function getPostBody() {
-  return {
+  const result = {
     conversion: getConversionRuleUrn(),
     conversionHappenedAt: getConversionHappenedAt(),
-    conversionValue: getConversionValue(),
     eventId: getEventId(),
     user: {
       userIds: getUserIds(),
       userInfo: getUserInfo()
     }
   };
+  const conversionValue = getConversionValue();
+  if (conversionValue) result.conversionValue = conversionValue;
+  return result;
 }
 
 function getConversionRuleUrn() {
@@ -472,7 +474,10 @@ function getConversionHappenedAt() {
 
 function getConversionValue() {
   const hasItems = getType(eventData.items) === 'array' && !!eventData.items[0];
-  const itemsCurrency = hasItems ? eventData.items[0].currency : 'NA?';
+  const itemsCurrency = hasItems ? eventData.items[0].currency : '';
+  const currencyCode =
+    eventDataOverride.currency || eventData.currency || itemsCurrency;
+  if (!currencyCode) return null;
   const itemsValue = hasItems
     ? eventData.items.reduce((acc, item) => {
         const price = item.price || 0;
@@ -480,8 +485,6 @@ function getConversionValue() {
         return acc + price * quantity;
       }, 0)
     : 0;
-  const currencyCode =
-    eventDataOverride.currency || eventData.currency || itemsCurrency;
   const amount = eventDataOverride.amount || eventData.value || itemsValue;
   return {
     currencyCode: currencyCode,
