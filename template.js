@@ -142,16 +142,18 @@ function getRequestHeaders() {
 }
 
 function getPostBody() {
-  return {
+  const result = {
     conversion: getConversionRuleUrn(),
     conversionHappenedAt: getConversionHappenedAt(),
-    conversionValue: getConversionValue(),
     eventId: getEventId(),
     user: {
       userIds: getUserIds(),
       userInfo: getUserInfo()
     }
   };
+  const conversionValue = getConversionValue();
+  if (conversionValue) result.conversionValue = conversionValue;
+  return result;
 }
 
 function getConversionRuleUrn() {
@@ -169,7 +171,10 @@ function getConversionHappenedAt() {
 
 function getConversionValue() {
   const hasItems = getType(eventData.items) === 'array' && !!eventData.items[0];
-  const itemsCurrency = hasItems ? eventData.items[0].currency : 'NA?';
+  const itemsCurrency = hasItems ? eventData.items[0].currency : '';
+  const currencyCode =
+    eventDataOverride.currency || eventData.currency || itemsCurrency;
+  if (!currencyCode) return null;
   const itemsValue = hasItems
     ? eventData.items.reduce((acc, item) => {
         const price = item.price || 0;
@@ -177,8 +182,6 @@ function getConversionValue() {
         return acc + price * quantity;
       }, 0)
     : 0;
-  const currencyCode =
-    eventDataOverride.currency || eventData.currency || itemsCurrency;
   const amount = eventDataOverride.amount || eventData.value || itemsValue;
   return {
     currencyCode: currencyCode,
