@@ -289,7 +289,7 @@ ___TEMPLATE_PARAMETERS___
           }
         ],
         "simpleValueType": true,
-        "defaultValue": ""
+        "defaultValue": "optional"
       }
     ]
   },
