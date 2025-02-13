@@ -47,6 +47,7 @@ if (data.type === 'page_view') {
 
 const user_data = eventData.user_data || {};
 const user_address = user_data.address[0] ? user_data.address[0] : (user_data.address || {});
+
 const eventDataOverride = makeOverrideTableMap(data.eventData);
 const userIdsOverride = makeOverrideTableMap(data.userIds);
 const userInfoOverride = makeOverrideTableMap(data.userInfo);
