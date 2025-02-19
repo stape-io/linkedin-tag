@@ -50,7 +50,12 @@ if (data.type === 'page_view') {
 }
 
 const user_data = eventData.user_data || {};
-const user_address = user_data.address[0] ? user_data.address[0] : (user_data.address || {});
+
+let user_address = user_data.address;
+if (['array', 'object'].indexOf(getType(user_address)) === -1) {
+  user_address = {};
+}
+user_address = user_address[0] || user_address || {};
 
 const eventDataOverride = makeOverrideTableMap(data.eventData);
 const userIdsOverride = makeOverrideTableMap(data.userIds);
