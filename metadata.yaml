@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: "https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager"
 versions:
+  - sha: 4a79e53c251922cb7314e6e883686678f82210b1
+    changeNotes: Added better support for user_data.address parsing. Added some tests.
   - sha: bb0b321b9e36a66899a22852cdcd86f3c183f51e
     changeNotes: Updated description and readme.
   - sha: 224c0c5dbc7025830e17bb15bf60b7b4a6a8f58f
