@@ -4,7 +4,7 @@ The LinkedIn Conversion API tag provides a seamless way to enhance your LinkedIn
 
 This tag enables you to send conversion data directly from your server to LinkedIn, improving data accuracy, privacy compliance, and campaign optimization. Whether you want to track leads, purchases, or other key metrics, the LinkedIn Conversion API tag ensures reliable data transmission, reducing discrepancies caused by browser limitations or ad blockers. It also facilitates sending event data from GA4 or a data client to the LinkedIn Conversion API.
 
-Perfect for marketers looking to maximize the effectiveness of their LinkedIn ads.
+Perfect for marketers looking to maximize the effectiveness of their LinkedIn Ads.
 
 ## Useful links:
 
