@@ -378,7 +378,13 @@ if (data.type === 'page_view') {
 }
 
 const user_data = eventData.user_data || {};
-const user_address = user_data.address || {};
+
+let user_address = user_data.address;
+if (['array', 'object'].indexOf(getType(user_address)) === -1) {
+  user_address = {};
+}
+user_address = user_address[0] || user_address || {};
+
 const eventDataOverride = makeOverrideTableMap(data.eventData);
 const userIdsOverride = makeOverrideTableMap(data.userIds);
 const userInfoOverride = makeOverrideTableMap(data.userInfo);
@@ -998,9 +1004,68 @@ ___SERVER_PERMISSIONS___
 
 ___TESTS___
 
-scenarios: []
+scenarios:
+- name: User data address is object and properties are at the root level
+  code: "const mockGetAllEventData = {\n  user_data: { \n    address: {\n      country:\
+    \ \"Brazil\",\n      first_name: \"Test First Name\",\n      last_name: \"Test\
+    \ Last Name\",\n      qweqwewa: 123123\n    }   \n  }\n};\n\nmock('getAllEventData',\
+    \ mockGetAllEventData);\n\nmock('sendHttpRequest', function(url, callback, headers,\
+    \ body) {\n  const parsedBody = JSON.parse(body);\n  if (parsedBody && parsedBody.user\
+    \ && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address.first_name);\n\
+    \    assertThat(parsedBody.user.userInfo.lastName).isEqualTo(mockGetAllEventData.user_data.address.last_name);\n\
+    \    assertThat(parsedBody.user.userInfo.countryCode).isEqualTo(mockGetAllEventData.user_data.address.country);\n\
+    \  }\n});\n\nrunCode(mockData);"
+- name: User data address is object with properties in a nested object in the '0'
+    key
+  code: "const mockGetAllEventData = {\n  user_data: { \n    address: {\n      0:\
+    \ {\n        country: \"Brazil\",\n        first_name: \"Test First Name\",\n\
+    \        last_name: \"Test Last Name\"\n      }\n    }  \n  }\n};\n\nmock('getAllEventData',\
+    \ mockGetAllEventData);\n\nmock('sendHttpRequest', function(url, callback, headers,\
+    \ body) {\n  const parsedBody = JSON.parse(body);\n  if (parsedBody && parsedBody.user\
+    \ && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address[0].first_name);\n\
+    \    assertThat(parsedBody.user.userInfo.lastName).isEqualTo(mockGetAllEventData.user_data.address[0].last_name);\n\
+    \    assertThat(parsedBody.user.userInfo.countryCode).isEqualTo(mockGetAllEventData.user_data.address[0].country);\n\
+    \  }\n});\n\nrunCode(mockData);"
+- name: User data address is array with properties in an object at the first position
+  code: "const mockGetAllEventData = {\n  user_data: { \n    address: [{\n      first_name:\
+    \ \"Test First Name\",\n      last_name: \"Test Last Name\",\n      country: \"\
+    Brazil\",\n      postal_code: \"example.com\"\n    }]\n  }\n};\n\nmock('getAllEventData',\
+    \ mockGetAllEventData);\n\nmock('sendHttpRequest', function(url, callback, headers,\
+    \ body) {\n  const parsedBody = JSON.parse(body);\n  if (parsedBody && parsedBody.user\
+    \ && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address[0].first_name);\n\
+    \    assertThat(parsedBody.user.userInfo.lastName).isEqualTo(mockGetAllEventData.user_data.address[0].last_name);\n\
+    \    assertThat(parsedBody.user.userInfo.countryCode).isEqualTo(mockGetAllEventData.user_data.address[0].country);\n\
+    \  }\n});\n\nrunCode(mockData);"
+- name: User data address is empty object
+  code: "const mockGetAllEventData = {\n  user_data: { \n    email: 'test@example.com',\n\
+    \    address: {}\n  }\n};\n\nmock('getAllEventData', mockGetAllEventData);\n\n\
+    mock('sendHttpRequest', function(url, callback, headers, body) {\n  const parsedBody\
+    \ = JSON.parse(body);\n  if (parsedBody && parsedBody.user && parsedBody.user.userInfo)\
+    \ {\n    if (\n      parsedBody.user.userInfo.firstName ||\n      parsedBody.user.userInfo.lastName\
+    \ ||\n      parsedBody.user.userInfo.countryCode\n    ) {\n      fail('firstName,\
+    \ lastName and countryCode shouldn\\'t be present when user_data.address is not\
+    \ supplied.');\n    }\n  }\n});\n\nrunCode(mockData);"
+- name: User data address is not supplied
+  code: "const mockGetAllEventData = {\n  user_data: { \n    email: 'test@example.com'\n\
+    \  }\n};\n\nmock('getAllEventData', mockGetAllEventData);\n\nmock('sendHttpRequest',\
+    \ function(url, callback, headers, body) {\n  const parsedBody = JSON.parse(body);\n\
+    \  if (parsedBody && parsedBody.user && parsedBody.user.userInfo) {\n    if (\n\
+    \      parsedBody.user.userInfo.firstName ||\n      parsedBody.user.userInfo.lastName\
+    \ ||\n      parsedBody.user.userInfo.countryCode\n    ) {\n      fail('firstName,\
+    \ lastName and countryCode shouldn\\'t be present when user_data.address is not\
+    \ supplied.');\n    }\n  }\n});\n\nrunCode(mockData);"
+setup: |+
+  const JSON = require('JSON');
+
+  const mockData = {
+    "type": "conversion",
+    "accessToken": "token",
+    "conversionRuleUrn": "123123"
+  };
 
 
 ___NOTES___
 
 Created on 18/08/2022, 12:25:26
+
+
