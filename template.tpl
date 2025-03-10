@@ -412,15 +412,17 @@ if (validateUserData()) {
   sendConversionToLinkedIn();
 } else {
   if (isLoggingEnabled) {
-    logToConsole({
-      Name: 'LinkedIn',
-      Type: 'Message',
-      TraceId: traceId,
-      EventName: postBody.eventId,
-      Message: 'No conversion event was sent to LinkedIn CAPI.',
-      Reason:
-        'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.'
-    });
+    logToConsole(
+      JSON.stringify({
+        Name: 'LinkedIn',
+        Type: 'Message',
+        TraceId: traceId,
+        EventName: postBody.eventId,
+        Message: 'No conversion event was sent to LinkedIn CAPI.',
+        Reason:
+          'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.'
+      })
+    );
   }
 
   data.gtmOnFailure();
