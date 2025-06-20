@@ -476,7 +476,7 @@ function getRequestHeaders() {
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
-    'LinkedIn-Version': '202406',
+    'LinkedIn-Version': '202506',
     'X-Restli-Protocol-Version': '2.0.0'
   };
 }
