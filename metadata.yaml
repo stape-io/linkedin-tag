@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: "https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager"
 versions:
+  - sha: 94000fb78f50b2442788a620ae34628cfbf16910
+    changeNotes: Bump API version to 202506.
   - sha: d19030a1820b00b15e2812d76c2f401e8c8ae810
     changeNotes: Fixed logging conditions.
   - sha: 2b101fbcaec0d62a0e9380f7e1c29c45fa1eba6c
