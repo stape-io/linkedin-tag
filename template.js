@@ -154,7 +154,7 @@ function getRequestHeaders() {
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
-    'LinkedIn-Version': '202506',
+    'LinkedIn-Version': '202601',
     'X-Restli-Protocol-Version': '2.0.0'
   };
 }
@@ -230,13 +230,6 @@ function getUserIds() {
   ];
 
   return userIds.filter((userId) => userId.idValue);
-}
-
-function getUserIdFactory(idType, getIdValue) {
-  return {
-    idType: idType,
-    idValue: getIdValue
-  };
 }
 
 function getUserEmail() {
