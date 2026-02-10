@@ -1,21 +1,23 @@
-const getAllEventData = require('getAllEventData');
-const JSON = require('JSON');
-const sendHttpRequest = require('sendHttpRequest');
-const getContainerVersion = require('getContainerVersion');
-const logToConsole = require('logToConsole');
-const sha256Sync = require('sha256Sync');
-const getRequestHeader = require('getRequestHeader');
-const getType = require('getType');
-const makeString = require('makeString');
-const encodeUriComponent = require('encodeUriComponent');
-const getTimestampMillis = require('getTimestampMillis');
-const Math = require('Math');
-const makeNumber = require('makeNumber');
-const makeTableMap = require('makeTableMap');
-const getCookieValues = require('getCookieValues');
 const decodeUriComponent = require('decodeUriComponent');
+const getAllEventData = require('getAllEventData');
+const getCookieValues = require('getCookieValues');
+const getContainerVersion = require('getContainerVersion');
+const getRequestHeader = require('getRequestHeader');
+const getTimestampMillis = require('getTimestampMillis');
+const getType = require('getType');
+const JSON = require('JSON');
+const logToConsole = require('logToConsole');
+const makeNumber = require('makeNumber');
+const makeString = require('makeString');
+const makeTableMap = require('makeTableMap');
+const Math = require('Math');
 const parseUrl = require('parseUrl');
+const sendHttpRequest = require('sendHttpRequest');
 const setCookie = require('setCookie');
+const sha256Sync = require('sha256Sync');
+
+/*==============================================================================
+==============================================================================*/
 
 const isLoggingEnabled = determinateIsLoggingEnabled();
 const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
@@ -100,6 +102,10 @@ if (validateUserData()) {
   data.gtmOnFailure();
 }
 
+/*==============================================================================
+  Vendor related functions
+==============================================================================*/
+
 function validateUserData() {
   if (postBody.user.userIds.length > 0) {
     return true;
@@ -148,7 +154,7 @@ function getRequestHeaders() {
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
-    'LinkedIn-Version': '202506',
+    'LinkedIn-Version': '202601',
     'X-Restli-Protocol-Version': '2.0.0'
   };
 }
@@ -175,8 +181,7 @@ function getConversionRuleUrn() {
 function getConversionHappenedAt() {
   if (eventDataOverride.conversionHappenedAt)
     return makeNumber(eventDataOverride.conversionHappenedAt);
-  if (eventData.conversion_happened_at)
-    return makeNumber(eventData.conversion_happened_at);
+  if (eventData.conversion_happened_at) return makeNumber(eventData.conversion_happened_at);
   if (eventData.event_time) return makeNumber(eventData.event_time);
   return Math.round(getTimestampMillis());
 }
@@ -184,8 +189,7 @@ function getConversionHappenedAt() {
 function getConversionValue() {
   const hasItems = getType(eventData.items) === 'array' && !!eventData.items[0];
   const itemsCurrency = hasItems ? eventData.items[0].currency : '';
-  const currencyCode =
-    eventDataOverride.currency || eventData.currency || itemsCurrency;
+  const currencyCode = eventDataOverride.currency || eventData.currency || itemsCurrency;
   if (!currencyCode) return null;
   const itemsValue = hasItems
     ? eventData.items.reduce((acc, item) => {
@@ -202,9 +206,7 @@ function getConversionValue() {
 }
 
 function getEventId() {
-  return (
-    eventDataOverride.eventId || eventData.eventId || eventData.event_id || ''
-  );
+  return eventDataOverride.eventId || eventData.eventId || eventData.event_id || '';
 }
 
 function getUserIds() {
@@ -230,31 +232,15 @@ function getUserIds() {
   return userIds.filter((userId) => userId.idValue);
 }
 
-function getUserIdFactory(idType, getIdValue) {
-  return {
-    idType: idType,
-    idValue: getIdValue
-  };
-}
-
 function getUserEmail() {
   return (
-    userIdsOverride.email ||
-    eventData.email ||
-    user_data.email_address ||
-    user_data.email ||
-    ''
+    userIdsOverride.email || eventData.email || user_data.email_address || user_data.email || ''
   );
 }
 
 function getLinkedInFirstPartyAdsTrackingUuid() {
   const liFatId = decodeUriComponent(getCookieValues(cookieName)[0] || '');
-  return (
-    liFatId ||
-    userIdsOverride.linkedinFirstPartyId ||
-    user_data.linkedinFirstPartyId ||
-    ''
-  );
+  return liFatId || userIdsOverride.linkedinFirstPartyId || user_data.linkedinFirstPartyId || '';
 }
 
 function getAcxiomId() {
@@ -333,6 +319,10 @@ function getUserInfo() {
   };
 }
 
+/*==============================================================================
+Helpers
+==============================================================================*/
+
 function isHashed(value) {
   if (!value) {
     return false;
@@ -363,10 +353,6 @@ function hashData(value) {
   value = makeString(value).trim().toLowerCase();
 
   return sha256Sync(value, { outputEncoding: 'hex' });
-}
-
-function enc(data) {
-  return encodeUriComponent(data || '');
 }
 
 function makeOverrideTableMap(values) {

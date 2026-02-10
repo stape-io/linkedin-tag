@@ -16,7 +16,7 @@ ___INFO___
   "displayName": "LinkedIn Conversion API",
   "brand": {
     "id": "brand_dummy",
-    "displayName": "",
+    "displayName": "stape.io",
     "thumbnail": "data:image/png;base64,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\u003d\u003d"
   },
   "description": "Tag that sends the event data from the GA4/Data client to LinkedIn Conversion API.",
@@ -270,14 +270,13 @@ ___TEMPLATE_PARAMETERS___
   },
   {
     "type": "GROUP",
-    "name": "consentSettingsGroup",
-    "displayName": "Consent Settings",
+    "name": "tagExecutionConsentSettingsGroup",
+    "displayName": "Tag Execution Consent Settings",
     "groupStyle": "ZIPPY_CLOSED",
     "subParams": [
       {
         "type": "RADIO",
         "name": "adStorageConsent",
-        "displayName": "",
         "radioItems": [
           {
             "value": "optional",
@@ -285,7 +284,8 @@ ___TEMPLATE_PARAMETERS___
           },
           {
             "value": "required",
-            "displayValue": "Send data in case marketing consent given"
+            "displayValue": "Send data in case marketing consent given",
+            "help": "Aborts the tag execution if marketing consent (\u003ci\u003ead_storage\u003c/i\u003e Google Consent Mode or Stape\u0027s Data Tag parameter) is not given."
           }
         ],
         "simpleValueType": true,
@@ -326,24 +326,26 @@ ___TEMPLATE_PARAMETERS___
 
 ___SANDBOXED_JS_FOR_SERVER___
 
-const getAllEventData = require('getAllEventData');
-const JSON = require('JSON');
-const sendHttpRequest = require('sendHttpRequest');
-const getContainerVersion = require('getContainerVersion');
-const logToConsole = require('logToConsole');
-const sha256Sync = require('sha256Sync');
-const getRequestHeader = require('getRequestHeader');
-const getType = require('getType');
-const makeString = require('makeString');
-const encodeUriComponent = require('encodeUriComponent');
-const getTimestampMillis = require('getTimestampMillis');
-const Math = require('Math');
-const makeNumber = require('makeNumber');
-const makeTableMap = require('makeTableMap');
-const getCookieValues = require('getCookieValues');
 const decodeUriComponent = require('decodeUriComponent');
+const getAllEventData = require('getAllEventData');
+const getCookieValues = require('getCookieValues');
+const getContainerVersion = require('getContainerVersion');
+const getRequestHeader = require('getRequestHeader');
+const getTimestampMillis = require('getTimestampMillis');
+const getType = require('getType');
+const JSON = require('JSON');
+const logToConsole = require('logToConsole');
+const makeNumber = require('makeNumber');
+const makeString = require('makeString');
+const makeTableMap = require('makeTableMap');
+const Math = require('Math');
 const parseUrl = require('parseUrl');
+const sendHttpRequest = require('sendHttpRequest');
 const setCookie = require('setCookie');
+const sha256Sync = require('sha256Sync');
+
+/*==============================================================================
+==============================================================================*/
 
 const isLoggingEnabled = determinateIsLoggingEnabled();
 const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
@@ -428,6 +430,10 @@ if (validateUserData()) {
   data.gtmOnFailure();
 }
 
+/*==============================================================================
+  Vendor related functions
+==============================================================================*/
+
 function validateUserData() {
   if (postBody.user.userIds.length > 0) {
     return true;
@@ -476,7 +482,7 @@ function getRequestHeaders() {
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
-    'LinkedIn-Version': '202506',
+    'LinkedIn-Version': '202601',
     'X-Restli-Protocol-Version': '2.0.0'
   };
 }
@@ -503,8 +509,7 @@ function getConversionRuleUrn() {
 function getConversionHappenedAt() {
   if (eventDataOverride.conversionHappenedAt)
     return makeNumber(eventDataOverride.conversionHappenedAt);
-  if (eventData.conversion_happened_at)
-    return makeNumber(eventData.conversion_happened_at);
+  if (eventData.conversion_happened_at) return makeNumber(eventData.conversion_happened_at);
   if (eventData.event_time) return makeNumber(eventData.event_time);
   return Math.round(getTimestampMillis());
 }
@@ -512,8 +517,7 @@ function getConversionHappenedAt() {
 function getConversionValue() {
   const hasItems = getType(eventData.items) === 'array' && !!eventData.items[0];
   const itemsCurrency = hasItems ? eventData.items[0].currency : '';
-  const currencyCode =
-    eventDataOverride.currency || eventData.currency || itemsCurrency;
+  const currencyCode = eventDataOverride.currency || eventData.currency || itemsCurrency;
   if (!currencyCode) return null;
   const itemsValue = hasItems
     ? eventData.items.reduce((acc, item) => {
@@ -530,9 +534,7 @@ function getConversionValue() {
 }
 
 function getEventId() {
-  return (
-    eventDataOverride.eventId || eventData.eventId || eventData.event_id || ''
-  );
+  return eventDataOverride.eventId || eventData.eventId || eventData.event_id || '';
 }
 
 function getUserIds() {
@@ -558,31 +560,15 @@ function getUserIds() {
   return userIds.filter((userId) => userId.idValue);
 }
 
-function getUserIdFactory(idType, getIdValue) {
-  return {
-    idType: idType,
-    idValue: getIdValue
-  };
-}
-
 function getUserEmail() {
   return (
-    userIdsOverride.email ||
-    eventData.email ||
-    user_data.email_address ||
-    user_data.email ||
-    ''
+    userIdsOverride.email || eventData.email || user_data.email_address || user_data.email || ''
   );
 }
 
 function getLinkedInFirstPartyAdsTrackingUuid() {
   const liFatId = decodeUriComponent(getCookieValues(cookieName)[0] || '');
-  return (
-    liFatId ||
-    userIdsOverride.linkedinFirstPartyId ||
-    user_data.linkedinFirstPartyId ||
-    ''
-  );
+  return liFatId || userIdsOverride.linkedinFirstPartyId || user_data.linkedinFirstPartyId || '';
 }
 
 function getAcxiomId() {
@@ -661,6 +647,10 @@ function getUserInfo() {
   };
 }
 
+/*==============================================================================
+Helpers
+==============================================================================*/
+
 function isHashed(value) {
   if (!value) {
     return false;
@@ -691,10 +681,6 @@ function hashData(value) {
   value = makeString(value).trim().toLowerCase();
 
   return sha256Sync(value, { outputEncoding: 'hex' });
-}
-
-function enc(data) {
-  return encodeUriComponent(data || '');
 }
 
 function makeOverrideTableMap(values) {
@@ -1056,7 +1042,7 @@ scenarios:
     \ ||\n      parsedBody.user.userInfo.countryCode\n    ) {\n      fail('firstName,\
     \ lastName and countryCode shouldn\\'t be present when user_data.address is not\
     \ supplied.');\n    }\n  }\n});\n\nrunCode(mockData);"
-setup: |+
+setup: |-
   const JSON = require('JSON');
 
   const mockData = {
