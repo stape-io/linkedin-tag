@@ -22,7 +22,6 @@ const sha256Sync = require('sha256Sync');
 const isLoggingEnabled = determinateIsLoggingEnabled();
 const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
 const cookieName = 'li_fat_id';
-
 const eventData = getAllEventData();
 
 if (!isConsentGivenOrNotRequired()) {
@@ -30,12 +29,11 @@ if (!isConsentGivenOrNotRequired()) {
 }
 
 if (data.type === 'page_view') {
+  const clickId = getLinkedInFirstPartyAdsTrackingUuid();
   const url = eventData.page_location || getRequestHeader('referer');
 
   if (url) {
-    const value = parseUrl(url).searchParams[cookieName];
-
-    if (value) {
+    if (clickId) {
       const options = {
         domain: 'auto',
         path: '/',
@@ -44,7 +42,7 @@ if (data.type === 'page_view') {
         'max-age': 86400 * 90
       };
 
-      setCookie(cookieName, value, options, false);
+      setCookie(cookieName, clickId, options, false);
     }
   }
 
@@ -239,8 +237,16 @@ function getUserEmail() {
 }
 
 function getLinkedInFirstPartyAdsTrackingUuid() {
-  const liFatId = decodeUriComponent(getCookieValues(cookieName)[0] || '');
-  return liFatId || userIdsOverride.linkedinFirstPartyId || user_data.linkedinFirstPartyId || '';
+  const commonCookie = eventData.common_cookie || {};
+  return (
+    parseClickIdFromUrl(eventData, cookieName) ||
+    getCookieValues(cookieName)[0] ||
+    commonCookie[cookieName] ||
+    eventData[cookieName] ||
+    userIdsOverride.linkedinFirstPartyId ||
+    user_data.linkedinFirstPartyId ||
+    ''
+  );
 }
 
 function getAcxiomId() {
@@ -322,6 +328,13 @@ function getUserInfo() {
 /*==============================================================================
 Helpers
 ==============================================================================*/
+function parseClickIdFromUrl(eventData, cookieName) {
+  const url = eventData.page_location || eventData.page_referrer || getRequestHeader('referer');
+  if (!url) return;
+
+  const urlSearchParams = parseUrl(url).searchParams;
+  return urlSearchParams[cookieName];
+}
 
 function isHashed(value) {
   if (!value) {
