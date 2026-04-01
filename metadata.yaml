@@ -1,6 +1,8 @@
 homepage: 'https://stape.io/'
 documentation: 'https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager'
 versions:
+  - sha: 7cd6168e4637a922c4e71f3c64fe47fc2fb20784
+    changeNotes: Added support for li_fat_id cookie from Data Tag common_cookie.
   - sha: 3686f8f16ba42e7430ea7c11bf929625aea3718d
     changeNotes: Updated consent section. Updated API version to 202601.
   - sha: 94000fb78f50b2442788a620ae34628cfbf16910
