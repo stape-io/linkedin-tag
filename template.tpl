@@ -14,6 +14,13 @@ ___INFO___
   "version": 1,
   "securityGroups": [],
   "displayName": "LinkedIn Conversion API",
+  "categories": [
+    "ADVERTISING",
+    "ANALYTICS",
+    "CONVERSIONS",
+    "MARKETING",
+    "REMARKETING"
+  ],
   "brand": {
     "id": "brand_dummy",
     "displayName": "stape.io",
@@ -30,234 +37,339 @@ ___TEMPLATE_PARAMETERS___
 
 [
   {
-    "type": "RADIO",
-    "name": "type",
-    "displayName": "Event Type",
-    "radioItems": [
+    "type": "GROUP",
+    "name": "baseConfig",
+    "subParams": [
       {
-        "value": "page_view",
-        "displayValue": "Page View"
+        "type": "RADIO",
+        "name": "type",
+        "displayName": "Event Type",
+        "radioItems": [
+          {
+            "value": "page_view",
+            "displayValue": "Page View"
+          },
+          {
+            "value": "conversion",
+            "displayValue": "Conversion"
+          }
+        ],
+        "simpleValueType": true,
+        "help": "\u003cb\u003ePage View\u003c/b\u003e - Stores the \u003ci\u003eli_fat_id\u003c/i\u003e URL parameter value inside the \u003ci\u003eli_fat_id cookie\u003c/i\u003e and, if enabled, sends a page view event from the browser to build audiences.\n\u003cbr\u003e\u003cbr\u003e\n\u003cb\u003eConversion\u003c/b\u003e - Sends request with data about the conversion to the LinkedIn.",
+        "defaultValue": "conversion"
+      }
+    ]
+  },
+  {
+    "type": "GROUP",
+    "name": "pageViewGroup",
+    "subParams": [
+      {
+        "type": "CHECKBOX",
+        "name": "enablePageViewFromBrowser",
+        "checkboxText": "Enable PageView from the Browser",
+        "simpleValueType": true,
+        "help": "Sends a page view event from the browser to build audiences using third-party cookies and, if available, using the first-party Click ID (li_fat_id).",
+        "subParams": [
+          {
+            "type": "TEXT",
+            "name": "partnerIds",
+            "displayName": "Partner IDs",
+            "simpleValueType": true,
+            "valueHint": "1234, 6565, 8888",
+            "help": "Add the Partner IDs of the ad accounts as a single item string, a comma separated string or an array of Partner IDs. \n\u003cbr/\u003e\n\u003ca href\u003d\"https://www.linkedin.com/help/lms/answer/a417869/access-the-partner-id-for-your-linkedin-insight-tag?lang\u003den\"\u003eLearn more\u003c/a\u003e.",
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              },
+              {
+                "type": "REGEX",
+                "args": [
+                  "\\d+(?:,\\s*\\d+)?"
+                ],
+                "errorMessage": "Partner IDs format must be: \"123\" or \"123, 555\""
+              }
+            ],
+            "enablingConditions": [
+              {
+                "paramName": "enablePageViewFromBrowser",
+                "paramValue": true,
+                "type": "EQUALS"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "type",
+        "paramValue": "page_view",
+        "type": "EQUALS"
+      }
+    ]
+  },
+  {
+    "type": "GROUP",
+    "name": "conversionDataGroup",
+    "subParams": [
+      {
+        "type": "GROUP",
+        "name": "conversionConfigGroup",
+        "subParams": [
+          {
+            "type": "TEXT",
+            "name": "accessToken",
+            "displayName": "Access Token",
+            "simpleValueType": true,
+            "help": "The LinkedIn API Access Token. \u003ca href\u003d\"https://www.linkedin.com/help/lms/answer/a7143277\"\u003eLearn more\u003c/a\u003e.",
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              }
+            ]
+          },
+          {
+            "type": "TEXT",
+            "name": "conversionRuleUrn",
+            "displayName": "Conversion ID",
+            "simpleValueType": true,
+            "valueValidators": [
+              {
+                "type": "NON_EMPTY"
+              }
+            ],
+            "help": "The Conversion ID of you conversion.\n\u003cbr/\u003e\nIt can be obtained in the Conversion settings URL by accessing the Conversion settings and searching for the number after \"/conversions/\" in the URL \u003ci\u003e[...]/accounts/{Account ID}/conversions/\u003cb\u003e{Conversion ID}\u003c/b\u003e[...]\u003c/i\u003e.\n\u003cbr/\u003e\n\u003ca href\u003d\"https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager#how-to-send-events-via-linked-in-insight-tag\"\u003eLearn more\u003c/a\u003e.",
+            "valueHint": "12345678"
+          },
+          {
+            "type": "CHECKBOX",
+            "name": "useOptimisticScenario",
+            "checkboxText": "Use Optimistic Scenario",
+            "simpleValueType": true,
+            "help": "The tag will call gtmOnSuccess() without waiting for a response from the API. This will speed up sGTM response time however your tag will always return the status fired successfully even in case it is not."
+          }
+        ]
       },
       {
-        "value": "conversion",
-        "displayValue": "Conversion"
-      }
-    ],
-    "simpleValueType": true,
-    "help": "\u003cb\u003ePage View\u003c/b\u003e - stores the li_fat_id URL parameter inside the li_fat_id cookie\u003cbr\u003e\u003cbr\u003e \u003cb\u003eConversion\u003c/b\u003e - Send request with data about the conversion to the LinkedIn",
-    "defaultValue": "conversion"
-  },
-  {
-    "type": "TEXT",
-    "name": "accessToken",
-    "displayName": "Access Token",
-    "simpleValueType": true,
-    "help": "LinkedIn API access token \u003ca href\u003d\"https://www.linkedin.com/help/lms/answer/a1718034\"\u003eLearn more\u003c/a\u003e",
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "enablingConditions": [
-      {
-        "paramName": "type",
-        "paramValue": "conversion",
-        "type": "EQUALS"
-      }
-    ]
-  },
-  {
-    "type": "TEXT",
-    "name": "conversionRuleUrn",
-    "displayName": "Conversion Rule ID",
-    "simpleValueType": true,
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ],
-    "enablingConditions": [
-      {
-        "paramName": "type",
-        "paramValue": "conversion",
-        "type": "EQUALS"
-      }
-    ]
-  },
-  {
-    "displayName": "Event Data Override",
-    "name": "eventDataGroup",
-    "groupStyle": "ZIPPY_CLOSED",
-    "type": "GROUP",
-    "subParams": [
-      {
-        "name": "eventData",
-        "simpleTableColumns": [
+        "displayName": "Event Data",
+        "name": "eventDataGroup",
+        "groupStyle": "ZIPPY_CLOSED",
+        "type": "GROUP",
+        "subParams": [
           {
-            "valueValidators": [
-              {
-                "type": "NON_EMPTY"
-              }
-            ],
-            "defaultValue": "conversionHappenedAt",
-            "displayName": "Property Name",
-            "name": "name",
-            "isUnique": true,
-            "type": "SELECT",
-            "selectItems": [
-              {
-                "value": "conversionHappenedAt",
-                "displayValue": "Conversion Happened At"
-              },
-              {
-                "value": "currency",
-                "displayValue": "Currency"
-              },
-              {
-                "value": "amount",
-                "displayValue": "Amount"
-              },
-              {
-                "value": "eventId",
-                "displayValue": "Event ID"
-              }
-            ]
+            "type": "CHECKBOX",
+            "name": "autoMapEventData",
+            "checkboxText": "Automap Event Data",
+            "simpleValueType": true,
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eConversion Happened At:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.conversion_happened_at\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.event_time\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003eCurrent Timestamp\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eEvent ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.eventId\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.event_id\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eAmount:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.value\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eSum of Price * Quantity from eventData.items[] or eventData.ecommerce.items[]\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCurrency:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.currency\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eCurrency from eventData.items[] or eventData.ecommerce.items[]\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "defaultValue": true
           },
           {
-            "defaultValue": "",
-            "displayName": "Property Value",
-            "name": "value",
-            "type": "TEXT"
+            "name": "eventData",
+            "simpleTableColumns": [
+              {
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "defaultValue": "conversionHappenedAt",
+                "displayName": "Property Name",
+                "name": "name",
+                "isUnique": true,
+                "type": "SELECT",
+                "selectItems": [
+                  {
+                    "value": "conversionHappenedAt",
+                    "displayValue": "Conversion Happened At"
+                  },
+                  {
+                    "value": "currency",
+                    "displayValue": "Currency"
+                  },
+                  {
+                    "value": "amount",
+                    "displayValue": "Amount"
+                  },
+                  {
+                    "value": "eventId",
+                    "displayValue": "Event ID"
+                  }
+                ]
+              },
+              {
+                "defaultValue": "",
+                "displayName": "Property Value",
+                "name": "value",
+                "type": "TEXT"
+              }
+            ],
+            "type": "SIMPLE_TABLE",
+            "newRowButtonText": "Add property",
+            "help": "\u003ca href\u003d\"https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads-reporting/conversions-api-schema#streaming-conversion-events-api-schema\"\u003eLearn more\u003c/a\u003e.",
+            "displayName": "Event Data"
           }
-        ],
-        "type": "SIMPLE_TABLE",
-        "newRowButtonText": "Add property",
-        "valueValidators": []
-      }
-    ],
-    "enablingConditions": [
-      {
-        "paramName": "type",
-        "paramValue": "conversion",
-        "type": "EQUALS"
-      }
-    ]
-  },
-  {
-    "displayName": "User Ids Override",
-    "name": "userIdsGroup",
-    "type": "GROUP",
-    "subParams": [
-      {
-        "type": "LABEL",
-        "name": "userIdsLabel",
-        "displayName": "Tag will attempt to parse cookie/event data but you can provide those parameter explicitly, at least one identifier is needed for a successful request."
+        ]
       },
       {
-        "name": "userIds",
-        "simpleTableColumns": [
+        "displayName": "User IDs",
+        "name": "userIdsGroup",
+        "type": "GROUP",
+        "subParams": [
           {
-            "valueValidators": [
-              {
-                "type": "NON_EMPTY"
-              }
-            ],
-            "defaultValue": "email",
-            "displayName": "Property Name",
-            "name": "name",
-            "isUnique": true,
-            "type": "SELECT",
-            "selectItems": [
-              {
-                "value": "email",
-                "displayValue": "SHA256_EMAIL"
-              },
-              {
-                "value": "linkedinFirstPartyId",
-                "displayValue": "LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID"
-              },
-              {
-                "value": "acxiomID",
-                "displayValue": "ACXIOM ID"
-              },
-              {
-                "value": "moatID",
-                "displayValue": "ORACLE_MOAT_ID"
-              }
-            ]
+            "type": "LABEL",
+            "name": "userIdsLabel",
+            "displayName": "The tag will automatically parse data, but you can provide these parameters explicitly. At least one identifier is required."
           },
           {
-            "defaultValue": "",
-            "displayName": "Property Value",
-            "name": "value",
-            "type": "TEXT"
-          }
-        ],
-        "type": "SIMPLE_TABLE",
-        "newRowButtonText": "Add property"
-      }
-    ],
-    "groupStyle": "ZIPPY_CLOSED",
-    "enablingConditions": [
-      {
-        "paramName": "type",
-        "paramValue": "conversion",
-        "type": "EQUALS"
-      }
-    ]
-  },
-  {
-    "displayName": "User Info Override",
-    "name": "userInfoGroup",
-    "groupStyle": "ZIPPY_CLOSED",
-    "type": "GROUP",
-    "subParams": [
-      {
-        "name": "userInfo",
-        "simpleTableColumns": [
-          {
-            "valueValidators": [
-              {
-                "type": "NON_EMPTY"
-              }
-            ],
-            "defaultValue": "firstName",
-            "displayName": "Property Name",
-            "name": "name",
-            "isUnique": true,
-            "type": "SELECT",
-            "selectItems": [
-              {
-                "value": "firstName",
-                "displayValue": "First Name"
-              },
-              {
-                "value": "lastName",
-                "displayValue": "Last Name"
-              },
-              {
-                "value": "jobTitle",
-                "displayValue": "Job Title"
-              },
-              {
-                "value": "companyName",
-                "displayValue": "Company Name"
-              },
-              {
-                "value": "countryCode",
-                "displayValue": "Country Code"
-              }
-            ]
+            "type": "CHECKBOX",
+            "name": "autoMapUserIds",
+            "checkboxText": "Automap User IDs",
+            "simpleValueType": true,
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eEmail:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.sha256_email_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLinkedIn First Party Ads Tracking UUID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e URL parameter\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e cookie\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.common_cookie.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.linkedinFirstPartyId\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eACXIOM ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.acxiomID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eOracle MOAT ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.moatID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "defaultValue": true
           },
           {
-            "defaultValue": "",
-            "displayName": "Property Value",
-            "name": "value",
-            "type": "TEXT"
+            "name": "userIds",
+            "simpleTableColumns": [
+              {
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "defaultValue": "email",
+                "displayName": "Property Name",
+                "name": "name",
+                "isUnique": true,
+                "type": "SELECT",
+                "selectItems": [
+                  {
+                    "value": "email",
+                    "displayValue": "Email (if not SHA256 hashed, it will be automatically hashed)"
+                  },
+                  {
+                    "value": "linkedinFirstPartyId",
+                    "displayValue": "LinkedIn First Party Ads Tracking UUID (\"li_fat_id\" cookie or URL parameter value)"
+                  },
+                  {
+                    "value": "acxiomID",
+                    "displayValue": "ACXIOM ID"
+                  },
+                  {
+                    "value": "moatID",
+                    "displayValue": "Oracle MOAT ID"
+                  }
+                ]
+              },
+              {
+                "defaultValue": "",
+                "displayName": "Property Value",
+                "name": "value",
+                "type": "TEXT"
+              }
+            ],
+            "type": "SIMPLE_TABLE",
+            "newRowButtonText": "Add property",
+            "displayName": "User IDs",
+            "help": "\u003ca href\u003d\"https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads-reporting/conversions-api-schema#conversioneventuser\"\u003eLearn more\u003c/a\u003e."
           }
         ],
-        "type": "SIMPLE_TABLE",
-        "newRowButtonText": "Add property"
+        "groupStyle": "ZIPPY_CLOSED"
+      },
+      {
+        "displayName": "User Info",
+        "name": "userInfoGroup",
+        "groupStyle": "ZIPPY_CLOSED",
+        "type": "GROUP",
+        "subParams": [
+          {
+            "type": "LABEL",
+            "name": "userInfoLabel",
+            "displayName": "The tag will attempt to automatically parse data, but you can provide these parameters explicitly. When including User Info data, at least \u003ci\u003eFirst Name\u003c/i\u003e and \u003ci\u003eLast Name\u003c/i\u003e are required."
+          },
+          {
+            "type": "CHECKBOX",
+            "name": "autoMapUserInfo",
+            "checkboxText": "Automap User Info",
+            "simpleValueType": true,
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eFirst Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.firstName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.FirstName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.nameFirst\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.first_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.first_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.first_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLast Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.lastName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.LastName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.nameLast\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.last_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.last_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.last_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eJob Title:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.jobTitle\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.jobTitle\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.job_title\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCompany Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.companyName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.company_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.companyName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.company_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCountry Code:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.countryCode\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.country\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.country\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.country\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "defaultValue": true
+          },
+          {
+            "name": "userInfo",
+            "simpleTableColumns": [
+              {
+                "valueValidators": [
+                  {
+                    "type": "NON_EMPTY"
+                  }
+                ],
+                "defaultValue": "firstName",
+                "displayName": "Property Name",
+                "name": "name",
+                "isUnique": true,
+                "type": "SELECT",
+                "selectItems": [
+                  {
+                    "value": "firstName",
+                    "displayValue": "First Name"
+                  },
+                  {
+                    "value": "lastName",
+                    "displayValue": "Last Name"
+                  },
+                  {
+                    "value": "jobTitle",
+                    "displayValue": "Job Title"
+                  },
+                  {
+                    "value": "companyName",
+                    "displayValue": "Company Name"
+                  },
+                  {
+                    "value": "countryCode",
+                    "displayValue": "Country Code"
+                  }
+                ]
+              },
+              {
+                "defaultValue": "",
+                "displayName": "Property Value",
+                "name": "value",
+                "type": "TEXT"
+              }
+            ],
+            "type": "SIMPLE_TABLE",
+            "newRowButtonText": "Add property",
+            "help": "\u003ca href\u003d\"https://learn.microsoft.com/en-us/linkedin/marketing/integrations/ads-reporting/conversions-api-schema#conversioneventuser\"\u003eLearn more\u003c/a\u003e.",
+            "displayName": "User Info"
+          }
+        ]
+      },
+      {
+        "type": "GROUP",
+        "name": "externalIdsGroup",
+        "displayName": "External IDs",
+        "groupStyle": "ZIPPY_CLOSED",
+        "subParams": [
+          {
+            "type": "CHECKBOX",
+            "name": "autoMapExternalIds",
+            "checkboxText": "Automap External IDs",
+            "simpleValueType": true,
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eeventData.user_id\u003c/li\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "defaultValue": false
+          },
+          {
+            "type": "TEXT",
+            "name": "externalIds",
+            "displayName": "External IDs",
+            "simpleValueType": true,
+            "help": "Send your own unique user IDs to help us recognize the same person across different devices.\n\u003cbr/\u003e\u003cbr/\u003e\nAdd a single item string or an array of External IDs.\n\u003cbr/\u003e\u003cbr/\u003e\nThe maximum supported size of the list is 1 at the moment. If the list contains multiple values, only the first value is used.\n\u003cbr/\u003e\u003cbr/\u003e\n\u003ca href\u003d\"https://learn.microsoft.com/en-us/linkedin/marketing/conversions/custom-matching-identifiers\"\u003eLearn more.\u003c/a\u003e"
+          }
+        ]
       }
     ],
     "enablingConditions": [
@@ -319,6 +431,18 @@ ___TEMPLATE_PARAMETERS___
         "simpleValueType": true,
         "defaultValue": "debug"
       }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "type",
+        "paramValue": "conversion",
+        "type": "EQUALS"
+      },
+      {
+        "paramName": "enablePageViewFromBrowser",
+        "paramValue": true,
+        "type": "EQUALS"
+      }
     ]
   }
 ]
@@ -326,7 +450,7 @@ ___TEMPLATE_PARAMETERS___
 
 ___SANDBOXED_JS_FOR_SERVER___
 
-const decodeUriComponent = require('decodeUriComponent');
+const encodeUriComponent = require('encodeUriComponent');
 const getAllEventData = require('getAllEventData');
 const getCookieValues = require('getCookieValues');
 const getContainerVersion = require('getContainerVersion');
@@ -341,129 +465,179 @@ const makeTableMap = require('makeTableMap');
 const Math = require('Math');
 const parseUrl = require('parseUrl');
 const sendHttpRequest = require('sendHttpRequest');
+const sendPixelFromBrowser = require('sendPixelFromBrowser');
 const setCookie = require('setCookie');
 const sha256Sync = require('sha256Sync');
+
+// Call-once methods.
+let gtmOnSuccess = () => {
+  gtmOnSuccess = () => {};
+  return data.gtmOnSuccess();
+};
+
+let gtmOnFailure = () => {
+  gtmOnFailure = () => {};
+  return data.gtmOnFailure();
+};
 
 /*==============================================================================
 ==============================================================================*/
 
-const isLoggingEnabled = determinateIsLoggingEnabled();
-const traceId = isLoggingEnabled ? getRequestHeader('trace-id') : undefined;
-const cookieName = 'li_fat_id';
-
+const API_VERSION = '202604';
 const eventData = getAllEventData();
 
-if (!isConsentGivenOrNotRequired()) {
-  return data.gtmOnSuccess();
-}
+if (shouldExitEarly(data, eventData)) return;
 
-if (data.type === 'page_view') {
-  const url = eventData.page_location || getRequestHeader('referer');
+const actionHandlers = {
+  page_view: handlePageViewEvent,
+  conversion: handleConversionEvent
+};
 
-  if (url) {
-    const value = parseUrl(url).searchParams[cookieName];
-
-    if (value) {
-      const options = {
-        domain: 'auto',
-        path: '/',
-        secure: true,
-        httpOnly: false,
-        'max-age': 86400 * 90
-      };
-
-      setCookie(cookieName, value, options, false);
-    }
-  }
-
-  return data.gtmOnSuccess();
-}
-
-const user_data = eventData.user_data || {};
-
-let user_address = user_data.address;
-if (['array', 'object'].indexOf(getType(user_address)) === -1) {
-  user_address = {};
-}
-user_address = user_address[0] || user_address || {};
-
-const eventDataOverride = makeOverrideTableMap(data.eventData);
-const userIdsOverride = makeOverrideTableMap(data.userIds);
-const userInfoOverride = makeOverrideTableMap(data.userInfo);
-
-const postUrl = getRequestUrl();
-const postBody = getPostBody();
-const postHeaders = getRequestHeaders();
-
-if (isLoggingEnabled) {
-  logToConsole(
-    JSON.stringify({
-      Name: 'LinkedIn',
-      Type: 'Request',
-      TraceId: traceId,
-      EventName: postBody.eventId,
-      RequestMethod: 'POST',
-      RequestUrl: postUrl,
-      RequestBody: postBody
-    })
-  );
-}
-
-// perform validation check on presence of 1/4 of the required IDs. If at least 1 ID is present, make the API call. If no IDs are present, log the warning and no call is made
-if (validateUserData()) {
-  sendConversionToLinkedIn();
+const handler = actionHandlers[data.type];
+if (handler) {
+  const error = handler(data, eventData);
+  if (error) return;
 } else {
-  if (isLoggingEnabled) {
-    logToConsole(
-      JSON.stringify({
-        Name: 'LinkedIn',
-        Type: 'Message',
-        TraceId: traceId,
-        EventName: postBody.eventId,
-        Message: 'No conversion event was sent to LinkedIn CAPI.',
-        Reason:
-          'You must set 1 out of the 4 acceptable IDs (SHA256_EMAIL, LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID, ACXIOM_ID, ORACLE_MOAT_ID) to resolve this issue or make certain to send both firstName and lastName.'
-      })
-    );
-  }
+  return gtmOnFailure();
+}
 
-  data.gtmOnFailure();
+if (data.useOptimisticScenario) {
+  return gtmOnSuccess();
 }
 
 /*==============================================================================
   Vendor related functions
 ==============================================================================*/
 
-function validateUserData() {
-  if (postBody.user.userIds.length > 0) {
+function generateSendPixelFromBrowserUrl(partnerIds, clickId, url) {
+  partnerIds = itemizeInput(partnerIds);
+  if (getType(partnerIds) !== 'array' || partnerIds.length === 0) return;
+
+  return (
+    'https://px.ads.linkedin.com/collect?v=2&fmt=gif&pid=' +
+    encodeUriComponent(partnerIds.join(',')) +
+    '&time=' +
+    getTimestampMillis() +
+    (clickId ? '&li_fat_id=' + encodeUriComponent(clickId) : '') +
+    '&url=' +
+    encodeUriComponent(url)
+  );
+}
+
+function handlePageViewEvent(data, eventData) {
+  const url = getUrl(eventData);
+  if (!url) {
+    return gtmOnSuccess();
+  }
+
+  const clickId = parseClickIdFromSources(eventData);
+
+  if (clickId) {
+    const options = {
+      domain: 'auto',
+      path: '/',
+      secure: true,
+      httpOnly: false,
+      'max-age': 86400 * 90
+    };
+    setCookie('li_fat_id', clickId, options, false);
+  }
+
+  if (data.enablePageViewFromBrowser) {
+    const sendPixelFromBrowserUrl = generateSendPixelFromBrowserUrl(data.partnerIds, clickId, url);
+    if (!sendPixelFromBrowserUrl) {
+      log({
+        Name: 'LinkedIn',
+        Type: 'Message',
+        EventName: data.type,
+        Message: '🛑 [ERROR] Invalid browser PageView event URL.'
+      });
+      gtmOnFailure();
+      return true;
+    }
+
+    const sendPixelFromBrowserSuccess = sendPixelFromBrowser(sendPixelFromBrowserUrl);
+    if (!sendPixelFromBrowserSuccess) {
+      log({
+        Name: 'LinkedIn',
+        Type: 'Message',
+        EventName: data.type,
+        Message:
+          '⚠️ [WARNING] The requestor does not support sending pixels from browser. 3rd party cookies will not be collected as a result.'
+      });
+    }
+  }
+
+  return gtmOnSuccess();
+}
+
+function handleConversionEvent(data, eventData) {
+  const postUrl = getRequestUrl();
+  const postBody = getPostBody(data, eventData);
+  const postHeaders = getRequestHeaders(data);
+
+  const invalidOrMissingFields = validateMappedData(postBody);
+  if (invalidOrMissingFields) {
+    log({
+      Name: 'LinkedIn',
+      Type: 'Message',
+      EventName: data.type,
+      Message: '🛑 [ERROR] No conversion event was sent to LinkedIn CAPI.',
+      Reason: invalidOrMissingFields
+    });
+
+    gtmOnFailure();
     return true;
   }
 
-  return postBody.user.userInfo.firstName && postBody.user.userInfo.lastName;
+  sendConversionToLinkedIn(data, postUrl, postBody, postHeaders);
 }
 
-function sendConversionToLinkedIn() {
+function validateMappedData(postBody) {
+  const hasUserIds =
+    getType(postBody.user) === 'object' &&
+    getType(postBody.user.userIds) === 'array' &&
+    postBody.user.userIds.some((userId) => userId.idValue);
+  if (!hasUserIds) {
+    return 'User IDs are missing. Set at least one of the following IDs (Email, LinkedIn First Party Ads Tracking UUID, ACXIOM ID, Oracle MOAT ID).';
+  }
+
+  const hasUserInfo =
+    getType(postBody.user) === 'object' && getType(postBody.user.userInfo) === 'object';
+  // Ignore empty strings to avoid breaking changes.
+  const hasFirstAndLastName =
+    hasUserInfo &&
+    getType(postBody.user.userInfo.firstName) === 'string' &&
+    getType(postBody.user.userInfo.lastName) === 'string';
+  if (hasUserInfo && !hasFirstAndLastName) {
+    return 'First Name and Last Name are missing. Set both First Name and Last Name when passing User Info data.';
+  }
+}
+
+function sendConversionToLinkedIn(data, postUrl, postBody, postHeaders) {
+  log({
+    Name: 'LinkedIn',
+    Type: 'Request',
+    EventName: data.type,
+    RequestMethod: 'POST',
+    RequestUrl: postUrl,
+    RequestBody: postBody
+  });
+
   sendHttpRequest(
     postUrl,
     (statusCode, headers, body) => {
-      if (isLoggingEnabled) {
-        logToConsole(
-          JSON.stringify({
-            Name: 'LinkedIn',
-            Type: 'Response',
-            TraceId: traceId,
-            EventName: postBody.eventId,
-            ResponseStatusCode: statusCode,
-            ResponseHeaders: headers,
-            ResponseBody: body
-          })
-        );
-      }
+      log({
+        Name: 'LinkedIn',
+        Type: 'Response',
+        EventName: data.type,
+        ResponseStatusCode: statusCode,
+        ResponseHeaders: headers,
+        ResponseBody: body
+      });
 
-      if (statusCode >= 200 && statusCode < 300) {
-        data.gtmOnSuccess();
-      } else {
-        data.gtmOnFailure();
+      if (!data.useOptimisticScenario) {
+        return statusCode >= 200 && statusCode < 300 ? gtmOnSuccess() : gtmOnFailure();
       }
     },
     {
@@ -478,178 +652,310 @@ function getRequestUrl() {
   return 'https://api.linkedin.com/rest/conversionEvents';
 }
 
-function getRequestHeaders() {
+function getRequestHeaders(data) {
   return {
     'Content-Type': 'application/json',
     Authorization: 'Bearer ' + data.accessToken,
-    'LinkedIn-Version': '202601',
+    'LinkedIn-Version': API_VERSION,
     'X-Restli-Protocol-Version': '2.0.0'
   };
 }
 
-function getPostBody() {
+function getPostBody(data, eventData) {
+  const autoMapEventDataEnabled = data.hasOwnProperty('autoMapEventData')
+    ? data.autoMapEventData
+    : true; // To avoid a breaking change.
+  const eventDataOverride = makeOverrideTableMap(data.eventData);
+
   const result = {
-    conversion: getConversionRuleUrn(),
-    conversionHappenedAt: getConversionHappenedAt(),
-    eventId: getEventId(),
+    conversion: getConversionRuleUrn(data),
+    conversionHappenedAt: getConversionHappenedAt(
+      eventData,
+      eventDataOverride,
+      autoMapEventDataEnabled
+    ),
+    eventId: getEventId(eventData, eventDataOverride, autoMapEventDataEnabled),
     user: {
-      userIds: getUserIds(),
-      userInfo: getUserInfo()
+      userIds: getUserIds(data, eventData),
+      userInfo: getUserInfo(data, eventData),
+      externalIds: getExternalIds(data, eventData)
     }
   };
-  const conversionValue = getConversionValue();
+  const conversionValue = getConversionValue(eventData, eventDataOverride, autoMapEventDataEnabled);
   if (conversionValue) result.conversionValue = conversionValue;
   return result;
 }
 
-function getConversionRuleUrn() {
+function getExternalIds(data, eventData) {
+  const externalIds = itemizeInput(data.externalIds);
+
+  if (getType(externalIds) === 'array' && externalIds.length) {
+    return externalIds;
+  } else if (data.autoMapExternalIds && eventData.user_id) {
+    return [makeString(eventData.user_id)];
+  }
+}
+
+function getConversionRuleUrn(data) {
   return 'urn:lla:llaPartnerConversion:' + data.conversionRuleUrn;
 }
 
-function getConversionHappenedAt() {
+function getConversionHappenedAt(eventData, eventDataOverride, autoMapEventDataEnabled) {
   if (eventDataOverride.conversionHappenedAt)
     return makeNumber(eventDataOverride.conversionHappenedAt);
-  if (eventData.conversion_happened_at) return makeNumber(eventData.conversion_happened_at);
-  if (eventData.event_time) return makeNumber(eventData.event_time);
-  return Math.round(getTimestampMillis());
+  if (autoMapEventDataEnabled) {
+    if (eventData.conversion_happened_at) return makeNumber(eventData.conversion_happened_at);
+    if (eventData.event_time) return makeNumber(eventData.event_time);
+    return Math.round(getTimestampMillis());
+  }
 }
 
-function getConversionValue() {
-  const hasItems = getType(eventData.items) === 'array' && !!eventData.items[0];
-  const itemsCurrency = hasItems ? eventData.items[0].currency : '';
-  const currencyCode = eventDataOverride.currency || eventData.currency || itemsCurrency;
+function getConversionValue(eventData, eventDataOverride, autoMapEventDataEnabled) {
+  let items;
+
+  if (autoMapEventDataEnabled) {
+    if (getType(eventData.items) === 'array' && eventData.items.length) {
+      items = eventData.items;
+    } else if (
+      getType(eventData.ecommerce) === 'object' &&
+      getType(eventData.ecommerce.items) === 'array' &&
+      eventData.ecommerce.items.length
+    ) {
+      items = eventData.ecommerce.items;
+    }
+  }
+
+  const hasItems = getType(items) === 'array' && !!items[0];
+
+  const itemsCurrency = hasItems ? items[0].currency : '';
+  const currencyCode =
+    eventDataOverride.currency ||
+    (autoMapEventDataEnabled ? eventData.currency || itemsCurrency : '') ||
+    '';
   if (!currencyCode) return null;
+
   const itemsValue = hasItems
-    ? eventData.items.reduce((acc, item) => {
+    ? items.reduce((acc, item) => {
         const price = item.price || 0;
         const quantity = item.quantity || 1;
         return acc + price * quantity;
       }, 0)
     : 0;
-  const amount = eventDataOverride.amount || eventData.value || itemsValue;
+  const amount =
+    eventDataOverride.amount || (autoMapEventDataEnabled ? eventData.value || itemsValue : 0) || 0;
+
   return {
     currencyCode: currencyCode,
     amount: makeString(amount)
   };
 }
 
-function getEventId() {
-  return eventDataOverride.eventId || eventData.eventId || eventData.event_id || '';
+function getEventId(eventData, eventDataOverride, autoMapEventDataEnabled) {
+  return (
+    eventDataOverride.eventId ||
+    (autoMapEventDataEnabled ? eventData.eventId || eventData.event_id : '') ||
+    ''
+  );
 }
 
-function getUserIds() {
+function getUserIds(data, eventData) {
+  const autoMapEnabled = data.hasOwnProperty('autoMapUserIds') ? data.autoMapUserIds : true; // To avoid a breaking change.
+  const userIdsOverride = makeOverrideTableMap(data.userIds);
+
   const userIds = [
     {
       idType: 'SHA256_EMAIL',
-      idValue: hashData(getUserEmail())
+      idValue: hashData(getUserEmail(eventData, userIdsOverride, autoMapEnabled))
     },
     {
       idType: 'LINKEDIN_FIRST_PARTY_ADS_TRACKING_UUID',
-      idValue: getLinkedInFirstPartyAdsTrackingUuid()
+      idValue: getLinkedInFirstPartyAdsTrackingUuid(eventData, userIdsOverride, autoMapEnabled)
     },
     {
       idType: 'ACXIOM_ID',
-      idValue: getAcxiomId()
+      idValue: getAcxiomId(eventData, userIdsOverride, autoMapEnabled)
     },
     {
       idType: 'ORACLE_MOAT_ID',
-      idValue: getOracleMoatId()
+      idValue: getOracleMoatId(eventData, userIdsOverride, autoMapEnabled)
     }
   ];
 
   return userIds.filter((userId) => userId.idValue);
 }
 
-function getUserEmail() {
+function getEmailAddressFromEventData(eventData) {
+  const eventDataUserData = eventData.user_data || {};
+  const email =
+    eventData.email ||
+    eventData.email_address ||
+    eventDataUserData.email ||
+    eventDataUserData.email_address ||
+    eventDataUserData.sha256_email_address;
+  const emailType = getType(email);
+
+  if (emailType === 'string') return email;
+  else if (emailType === 'array' || emailType === 'object') return email[0];
+
+  return;
+}
+
+function getUserEmail(eventData, userIdsOverride, autoMapEnabled) {
   return (
-    userIdsOverride.email || eventData.email || user_data.email_address || user_data.email || ''
+    userIdsOverride.email || (autoMapEnabled ? getEmailAddressFromEventData(eventData) : '') || ''
   );
 }
 
-function getLinkedInFirstPartyAdsTrackingUuid() {
-  const liFatId = decodeUriComponent(getCookieValues(cookieName)[0] || '');
-  return liFatId || userIdsOverride.linkedinFirstPartyId || user_data.linkedinFirstPartyId || '';
+function parseClickIdFromSources(eventData) {
+  const cookieName = 'li_fat_id';
+  return (
+    parseClickIdFromUrl(eventData, cookieName) ||
+    getCookieValues(cookieName)[0] ||
+    (eventData.common_cookie || {})[cookieName] ||
+    eventData[cookieName] ||
+    (eventData.user_data || {}).linkedinFirstPartyId
+  );
 }
 
-function getAcxiomId() {
-  return userIdsOverride.acxiomID || user_data.acxiomID || '';
+function getLinkedInFirstPartyAdsTrackingUuid(eventData, userIdsOverride, autoMapEnabled) {
+  return (
+    userIdsOverride.linkedinFirstPartyId ||
+    (autoMapEnabled ? parseClickIdFromSources(eventData) : '') ||
+    ''
+  );
 }
 
-function getOracleMoatId() {
-  return userIdsOverride.moatID || user_data.moatID || '';
+function getAcxiomId(eventData, userIdsOverride, autoMapEnabled) {
+  return (
+    userIdsOverride.acxiomID || (autoMapEnabled ? (eventData.user_data || {}).acxiomID : '') || ''
+  );
 }
 
-function getUserFirstName() {
+function getOracleMoatId(eventData, userIdsOverride, autoMapEnabled) {
+  return userIdsOverride.moatID || (autoMapEnabled ? (eventData.user_data || {}).moatID : '') || '';
+}
+
+function getUserFirstName(eventData, userAddress, userInfoOverride, autoMapEnabled) {
   return (
     userInfoOverride.firstName ||
-    eventData.firstName ||
-    eventData.FirstName ||
-    eventData.nameFirst ||
-    eventData.first_name ||
-    user_data.first_name ||
-    user_address.first_name ||
+    (autoMapEnabled
+      ? eventData.firstName ||
+        eventData.FirstName ||
+        eventData.nameFirst ||
+        eventData.first_name ||
+        (eventData.user_data || {}).first_name ||
+        userAddress.first_name
+      : '') ||
     ''
   );
 }
 
-function getUserLastName() {
+function getUserLastName(eventData, userAddress, userInfoOverride, autoMapEnabled) {
   return (
     userInfoOverride.lastName ||
-    eventData.lastName ||
-    eventData.LastName ||
-    eventData.nameLast ||
-    eventData.last_name ||
-    user_data.last_name ||
-    user_address.last_name ||
+    (autoMapEnabled
+      ? eventData.lastName ||
+        eventData.LastName ||
+        eventData.nameLast ||
+        eventData.last_name ||
+        (eventData.user_data || {}).last_name ||
+        userAddress.last_name
+      : '') ||
     ''
   );
 }
 
-function getUserJobTitle() {
+function getUserJobTitle(eventData, userInfoOverride, autoMapEnabled) {
+  const userData = eventData.user_data || {};
   return (
     userInfoOverride.jobTitle ||
-    eventData.jobTitle ||
-    user_data.jobTitle ||
-    user_data.job_title ||
+    (autoMapEnabled ? eventData.jobTitle || userData.jobTitle || userData.job_title : '') ||
     ''
   );
 }
 
-function getUserCompanyName() {
+function getUserCompanyName(eventData, userInfoOverride, autoMapEnabled) {
+  const userData = eventData.user_data || {};
   return (
     userInfoOverride.companyName ||
-    eventData.companyName ||
-    eventData.company_name ||
-    user_data.companyName ||
-    user_data.company_name ||
+    (autoMapEnabled
+      ? eventData.companyName ||
+        eventData.company_name ||
+        userData.companyName ||
+        userData.company_name
+      : '') ||
     ''
   );
 }
 
-function getUserCountryCode() {
+function getUserCountryCode(eventData, userAddress, userInfoOverride, autoMapEnabled) {
   return (
     userInfoOverride.countryCode ||
-    eventData.countryCode ||
-    eventData.country ||
-    user_data.country ||
-    user_address.country ||
+    (autoMapEnabled
+      ? eventData.countryCode ||
+        eventData.country ||
+        (eventData.user_data || {}).country ||
+        userAddress.country
+      : '') ||
     ''
   );
 }
 
-function getUserInfo() {
+function getUserInfo(data, eventData) {
+  const autoMapEnabled = data.hasOwnProperty('autoMapUserInfo') ? data.autoMapUserInfo : true; // To avoid a breaking change.
+  const userInfoOverride = makeOverrideTableMap(data.userInfo);
+
+  const userData = eventData.user_data || {};
+  let userAddress = userData.address;
+  if (['array', 'object'].indexOf(getType(userAddress)) === -1) {
+    userAddress = {};
+  }
+  userAddress = userAddress[0] || userAddress || {};
+
   return {
-    firstName: getUserFirstName(),
-    lastName: getUserLastName(),
-    title: getUserJobTitle(),
-    companyName: getUserCompanyName(),
-    countryCode: getUserCountryCode()
+    firstName: getUserFirstName(eventData, userAddress, userInfoOverride, autoMapEnabled),
+    lastName: getUserLastName(eventData, userAddress, userInfoOverride, autoMapEnabled),
+    title: getUserJobTitle(eventData, userInfoOverride, autoMapEnabled),
+    companyName: getUserCompanyName(eventData, userInfoOverride, autoMapEnabled),
+    countryCode: getUserCountryCode(eventData, userAddress, userInfoOverride, autoMapEnabled)
   };
 }
 
 /*==============================================================================
-Helpers
+  Helpers
 ==============================================================================*/
+
+function getUrl(eventData) {
+  return eventData.page_location || getRequestHeader('referer') || eventData.page_referrer;
+}
+
+function isConsentGivenOrNotRequired(data, eventData) {
+  if (data.adStorageConsent !== 'required') return true;
+  if (eventData.consent_state) return !!eventData.consent_state.ad_storage;
+  const xGaGcs = eventData['x-ga-gcs'] || ''; // x-ga-gcs is a string like "G110"
+  return xGaGcs[2] === '1';
+}
+
+function shouldExitEarly(data, eventData) {
+  if (!isConsentGivenOrNotRequired(data, eventData)) {
+    gtmOnSuccess();
+    return true;
+  }
+
+  const url = getUrl(eventData);
+  if (url && url.lastIndexOf('https://gtm-msr.appspot.com/', 0) === 0) {
+    gtmOnSuccess();
+    return true;
+  }
+}
+
+function parseClickIdFromUrl(eventData, clickIdParamName) {
+  const url = getUrl(eventData);
+  if (!url) return;
+
+  const urlSearchParams = parseUrl(url).searchParams;
+  return urlSearchParams[clickIdParamName];
+}
 
 function isHashed(value) {
   if (!value) {
@@ -687,6 +993,26 @@ function makeOverrideTableMap(values) {
   return makeTableMap(values || [], 'name', 'value') || {};
 }
 
+function itemizeInput(input) {
+  const type = getType(input);
+  if (type !== 'string' && type !== 'array') return;
+
+  input = type === 'string' ? input.split(',') : input;
+  if (getType(input) === 'array') {
+    input = input.map((p) => makeString(p).trim()).filter((p) => p);
+  }
+  return input;
+}
+
+function log(rawDataToLog) {
+  rawDataToLog.TraceId = getRequestHeader('trace-id');
+  if (determinateIsLoggingEnabled()) logConsole(rawDataToLog);
+}
+
+function logConsole(dataToLog) {
+  logToConsole(JSON.stringify(dataToLog));
+}
+
 function determinateIsLoggingEnabled() {
   const containerVersion = getContainerVersion();
   const isDebug = !!(
@@ -707,13 +1033,6 @@ function determinateIsLoggingEnabled() {
   }
 
   return data.logType === 'always';
-}
-
-function isConsentGivenOrNotRequired() {
-  if (data.adStorageConsent !== 'required') return true;
-  if (eventData.consent_state) return !!eventData.consent_state.ad_storage;
-  const xGaGcs = eventData['x-ga-gcs'] || ''; // x-ga-gcs is a string like "G110"
-  return xGaGcs[2] === '1';
 }
 
 
@@ -986,6 +1305,39 @@ ___SERVER_PERMISSIONS___
       "isEditedByUser": true
     },
     "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "send_pixel_from_browser",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "allowedUrls",
+          "value": {
+            "type": 1,
+            "string": "specific"
+          }
+        },
+        {
+          "key": "urls",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "https://px.ads.linkedin.com/*"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
   }
 ]
 
@@ -994,36 +1346,39 @@ ___TESTS___
 
 scenarios:
 - name: User data address is object and properties are at the root level
-  code: "const mockGetAllEventData = {\n  user_data: { \n    address: {\n      country:\
-    \ \"Brazil\",\n      first_name: \"Test First Name\",\n      last_name: \"Test\
-    \ Last Name\",\n      qweqwewa: 123123\n    }   \n  }\n};\n\nmock('getAllEventData',\
-    \ mockGetAllEventData);\n\nmock('sendHttpRequest', function(url, callback, headers,\
-    \ body) {\n  const parsedBody = JSON.parse(body);\n  if (parsedBody && parsedBody.user\
-    \ && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address.first_name);\n\
+  code: "const mockGetAllEventData = {\n  user_data: {\n    email: 'test@example.com',\n\
+    \    address: {\n      country: \"Brazil\",\n      first_name: \"Test First Name\"\
+    ,\n      last_name: \"Test Last Name\",\n      qweqwewa: 123123\n    }   \n  }\n\
+    };\n\nmock('getAllEventData', mockGetAllEventData);\n\nmock('sendHttpRequest',\
+    \ function(url, callback, headers, body) {\n  const parsedBody = JSON.parse(body);\n\
+    \  if (parsedBody && parsedBody.user && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address.first_name);\n\
     \    assertThat(parsedBody.user.userInfo.lastName).isEqualTo(mockGetAllEventData.user_data.address.last_name);\n\
     \    assertThat(parsedBody.user.userInfo.countryCode).isEqualTo(mockGetAllEventData.user_data.address.country);\n\
-    \  }\n});\n\nrunCode(mockData);"
+    \  }\n  callback(200, {}, '');\n});\n\nrunCode(mockData);\n\nassertApi('gtmOnSuccess').wasCalled();\n\
+    assertApi('gtmOnFailure').wasNotCalled();"
 - name: User data address is object with properties in a nested object in the '0'
     key
-  code: "const mockGetAllEventData = {\n  user_data: { \n    address: {\n      0:\
-    \ {\n        country: \"Brazil\",\n        first_name: \"Test First Name\",\n\
-    \        last_name: \"Test Last Name\"\n      }\n    }  \n  }\n};\n\nmock('getAllEventData',\
-    \ mockGetAllEventData);\n\nmock('sendHttpRequest', function(url, callback, headers,\
-    \ body) {\n  const parsedBody = JSON.parse(body);\n  if (parsedBody && parsedBody.user\
-    \ && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address[0].first_name);\n\
+  code: "const mockGetAllEventData = {\n  user_data: { \n    email: 'test@example.com',\n\
+    \    address: {\n      0: {\n        country: \"Brazil\",\n        first_name:\
+    \ \"Test First Name\",\n        last_name: \"Test Last Name\"\n      }\n    }\
+    \  \n  }\n};\n\nmock('getAllEventData', mockGetAllEventData);\n\nmock('sendHttpRequest',\
+    \ function(url, callback, headers, body) {\n  const parsedBody = JSON.parse(body);\n\
+    \  if (parsedBody && parsedBody.user && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address[0].first_name);\n\
     \    assertThat(parsedBody.user.userInfo.lastName).isEqualTo(mockGetAllEventData.user_data.address[0].last_name);\n\
     \    assertThat(parsedBody.user.userInfo.countryCode).isEqualTo(mockGetAllEventData.user_data.address[0].country);\n\
-    \  }\n});\n\nrunCode(mockData);"
+    \  }\n  callback(200, {}, '');\n});\n\nrunCode(mockData);\n\nassertApi('gtmOnSuccess').wasCalled();\n\
+    assertApi('gtmOnFailure').wasNotCalled();"
 - name: User data address is array with properties in an object at the first position
-  code: "const mockGetAllEventData = {\n  user_data: { \n    address: [{\n      first_name:\
-    \ \"Test First Name\",\n      last_name: \"Test Last Name\",\n      country: \"\
-    Brazil\",\n      postal_code: \"example.com\"\n    }]\n  }\n};\n\nmock('getAllEventData',\
-    \ mockGetAllEventData);\n\nmock('sendHttpRequest', function(url, callback, headers,\
-    \ body) {\n  const parsedBody = JSON.parse(body);\n  if (parsedBody && parsedBody.user\
-    \ && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address[0].first_name);\n\
+  code: "const mockGetAllEventData = {\n  user_data: { \n    email: 'test@example.com',\n\
+    \    address: [{\n      first_name: \"Test First Name\",\n      last_name: \"\
+    Test Last Name\",\n      country: \"Brazil\",\n      postal_code: \"example.com\"\
+    \n    }]\n  }\n};\n\nmock('getAllEventData', mockGetAllEventData);\n\nmock('sendHttpRequest',\
+    \ function(url, callback, headers, body) {\n  const parsedBody = JSON.parse(body);\n\
+    \  if (parsedBody && parsedBody.user && parsedBody.user.userInfo) {\n    assertThat(parsedBody.user.userInfo.firstName).isEqualTo(mockGetAllEventData.user_data.address[0].first_name);\n\
     \    assertThat(parsedBody.user.userInfo.lastName).isEqualTo(mockGetAllEventData.user_data.address[0].last_name);\n\
     \    assertThat(parsedBody.user.userInfo.countryCode).isEqualTo(mockGetAllEventData.user_data.address[0].country);\n\
-    \  }\n});\n\nrunCode(mockData);"
+    \  }\n  callback(200, {}, '');\n});\n\nrunCode(mockData);\n\nassertApi('gtmOnSuccess').wasCalled();\n\
+    assertApi('gtmOnFailure').wasNotCalled();"
 - name: User data address is empty object
   code: "const mockGetAllEventData = {\n  user_data: { \n    email: 'test@example.com',\n\
     \    address: {}\n  }\n};\n\nmock('getAllEventData', mockGetAllEventData);\n\n\
@@ -1032,7 +1387,8 @@ scenarios:
     \ {\n    if (\n      parsedBody.user.userInfo.firstName ||\n      parsedBody.user.userInfo.lastName\
     \ ||\n      parsedBody.user.userInfo.countryCode\n    ) {\n      fail('firstName,\
     \ lastName and countryCode shouldn\\'t be present when user_data.address is not\
-    \ supplied.');\n    }\n  }\n});\n\nrunCode(mockData);"
+    \ supplied.');\n    }\n  }\n  callback(200, {}, '');\n});\n\nrunCode(mockData);\n\
+    \nassertApi('gtmOnSuccess').wasCalled();\nassertApi('gtmOnFailure').wasNotCalled();"
 - name: User data address is not supplied
   code: "const mockGetAllEventData = {\n  user_data: { \n    email: 'test@example.com'\n\
     \  }\n};\n\nmock('getAllEventData', mockGetAllEventData);\n\nmock('sendHttpRequest',\
@@ -1041,7 +1397,8 @@ scenarios:
     \      parsedBody.user.userInfo.firstName ||\n      parsedBody.user.userInfo.lastName\
     \ ||\n      parsedBody.user.userInfo.countryCode\n    ) {\n      fail('firstName,\
     \ lastName and countryCode shouldn\\'t be present when user_data.address is not\
-    \ supplied.');\n    }\n  }\n});\n\nrunCode(mockData);"
+    \ supplied.');\n    }\n  }\n  callback(200, {}, '');\n});\n\nrunCode(mockData);\n\
+    \nassertApi('gtmOnSuccess').wasCalled();\nassertApi('gtmOnFailure').wasNotCalled();"
 setup: |-
   const JSON = require('JSON');
 
@@ -1054,6 +1411,13 @@ setup: |-
 
 ___NOTES___
 
-Created on 18/08/2022, 12:25:26
+2026-04-21 - Change Notes:
+  - Add "Enable PageView from the Browser" option to the Page View event type: sends a pixel from the browser to LinkedIn's pixel endpoint using configured Partner IDs, enabling audience building via third-party cookies and first-party Click ID
+  - Add per-section auto-mapping controls for Event Data, User IDs, and User Info, allowing each to be individually disabled; all default to enabled for backward compatibility with existing configurations
+  - Add External IDs support with optional auto-mapping from the user_id event data field
+  - Add template categories (ADVERTISING, ANALYTICS, CONVERSIONS, MARKETING, REMARKETING)
+  - Refactor code to use explicit function parameters instead of closures and add call-once gtmOnSuccess/gtmOnFailure wrappers to prevent double-firing in async and optimistic scenario paths
+  - Bump LinkedIn API version from 202601 to 202604
 
+Created on 18/08/2022, 12:25:26
 
