@@ -33,3 +33,6 @@ All overrides take precedence over auto-mapped values:
 ## Open Source
 
 The **LinkedIn Tag for GTM Server Side** is developed and maintained by [Stape Team](https://stape.io/) under the Apache 2.0 license.
+
+### GTM Gallery Status
+🟢 [Listed](https://tagmanager.google.com/gallery/#/owners/stape-io/templates/linkedin-tag)
