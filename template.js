@@ -326,6 +326,14 @@ function getUserIds(data, eventData) {
     {
       idType: 'ORACLE_MOAT_ID',
       idValue: getOracleMoatId(eventData, userIdsOverride, autoMapEnabled)
+    },
+    {
+      idType: 'PLAINTEXT_IP_ADDRESS',
+      idValue: getIpAddress(eventData, userIdsOverride, autoMapEnabled)
+    },
+    {
+      idType: 'GOOGLE_AID',
+      idValue: getGoogleAid(eventData, userIdsOverride, autoMapEnabled)
     }
   ];
 
@@ -381,6 +389,30 @@ function getAcxiomId(eventData, userIdsOverride, autoMapEnabled) {
 
 function getOracleMoatId(eventData, userIdsOverride, autoMapEnabled) {
   return userIdsOverride.moatID || (autoMapEnabled ? (eventData.user_data || {}).moatID : '') || '';
+}
+
+function getIpAddress(eventData, userIdsOverride, autoMapEnabled) {
+  return (
+    userIdsOverride.ipAddress ||
+    (autoMapEnabled
+      ? eventData.ip_override ||
+        (eventData.user_data || {}).ip_address ||
+        ''
+      : '') ||
+    ''
+  );
+}
+
+function getGoogleAid(eventData, userIdsOverride, autoMapEnabled) {
+  return (
+    userIdsOverride.googleAid ||
+    (autoMapEnabled
+      ? (eventData.user_data || {}).google_aid ||
+        (eventData.user_data || {}).gaid ||
+        ''
+      : '') ||
+    ''
+  );
 }
 
 function getUserFirstName(eventData, userAddress, userInfoOverride, autoMapEnabled) {

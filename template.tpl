@@ -162,7 +162,7 @@ ___TEMPLATE_PARAMETERS___
             "name": "autoMapEventData",
             "checkboxText": "Automap Event Data",
             "simpleValueType": true,
-            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eConversion Happened At:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.conversion_happened_at\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.event_time\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003eCurrent Timestamp\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eEvent ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.eventId\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.event_id\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eAmount:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.value\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eSum of Price * Quantity from eventData.items[] or eventData.ecommerce.items[]\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCurrency:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.currency\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eCurrency from eventData.items[] or eventData.ecommerce.items[]\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eConversion Happened At:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.conversion_happened_at\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.event_time\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003eCurrent Timestamp\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eEvent ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.eventId\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.event_id\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eAmount:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.value\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eSum of Price * Quantity from eventData.items[] or eventData.ecommerce.items[]\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCurrency:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.currency\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eCurrency from eventData.items[] or eventData.ecommerce.items[]\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ePlaintext IP Address:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.ip_override\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.ip_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eGoogle Advertising ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.google_aid\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.gaid\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
             "defaultValue": true
           },
           {
@@ -227,7 +227,7 @@ ___TEMPLATE_PARAMETERS___
             "name": "autoMapUserIds",
             "checkboxText": "Automap User IDs",
             "simpleValueType": true,
-            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eEmail:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.sha256_email_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLinkedIn First Party Ads Tracking UUID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e URL parameter\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e cookie\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.common_cookie.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.linkedinFirstPartyId\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eACXIOM ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.acxiomID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eOracle MOAT ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.moatID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eEmail:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.sha256_email_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLinkedIn First Party Ads Tracking UUID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e URL parameter\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e cookie\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.common_cookie.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.linkedinFirstPartyId\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eACXIOM ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.acxiomID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eOracle MOAT ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.moatID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ePlaintext IP Address:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.ip_override\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.ip_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eGoogle Advertising ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.google_aid\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.gaid\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
             "defaultValue": true
           },
           {
@@ -260,6 +260,14 @@ ___TEMPLATE_PARAMETERS___
                   {
                     "value": "moatID",
                     "displayValue": "Oracle MOAT ID"
+                  },
+                  {
+                    "value": "ipAddress",
+                    "displayValue": "Plaintext IP Address (IPv4 only — LinkedIn hashes server-side)"
+                  },
+                  {
+                    "value": "googleAid",
+                    "displayValue": "Google Advertising ID (Android)"
                   }
                 ]
               },
@@ -294,7 +302,7 @@ ___TEMPLATE_PARAMETERS___
             "name": "autoMapUserInfo",
             "checkboxText": "Automap User Info",
             "simpleValueType": true,
-            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eFirst Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.firstName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.FirstName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.nameFirst\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.first_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.first_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.first_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLast Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.lastName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.LastName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.nameLast\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.last_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.last_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.last_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eJob Title:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.jobTitle\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.jobTitle\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.job_title\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCompany Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.companyName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.company_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.companyName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.company_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCountry Code:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.countryCode\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.country\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.country\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.country\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eFirst Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.firstName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.FirstName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.nameFirst\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.first_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.first_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.first_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLast Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.lastName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.LastName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.nameLast\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.last_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.last_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.last_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eJob Title:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.jobTitle\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.jobTitle\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.job_title\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCompany Name:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.companyName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.company_name\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.companyName\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.company_name\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eCountry Code:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.countryCode\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.country\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.country\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_address.country\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ePlaintext IP Address:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.ip_override\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.ip_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eGoogle Advertising ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.google_aid\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.gaid\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
             "defaultValue": true
           },
           {
@@ -778,6 +786,14 @@ function getUserIds(data, eventData) {
     {
       idType: 'ORACLE_MOAT_ID',
       idValue: getOracleMoatId(eventData, userIdsOverride, autoMapEnabled)
+    },
+    {
+      idType: 'PLAINTEXT_IP_ADDRESS',
+      idValue: getIpAddress(eventData, userIdsOverride, autoMapEnabled)
+    },
+    {
+      idType: 'GOOGLE_AID',
+      idValue: getGoogleAid(eventData, userIdsOverride, autoMapEnabled)
     }
   ];
 
@@ -833,6 +849,30 @@ function getAcxiomId(eventData, userIdsOverride, autoMapEnabled) {
 
 function getOracleMoatId(eventData, userIdsOverride, autoMapEnabled) {
   return userIdsOverride.moatID || (autoMapEnabled ? (eventData.user_data || {}).moatID : '') || '';
+}
+
+function getIpAddress(eventData, userIdsOverride, autoMapEnabled) {
+  return (
+    userIdsOverride.ipAddress ||
+    (autoMapEnabled
+      ? eventData.ip_override ||
+        (eventData.user_data || {}).ip_address ||
+        ''
+      : '') ||
+    ''
+  );
+}
+
+function getGoogleAid(eventData, userIdsOverride, autoMapEnabled) {
+  return (
+    userIdsOverride.googleAid ||
+    (autoMapEnabled
+      ? (eventData.user_data || {}).google_aid ||
+        (eventData.user_data || {}).gaid ||
+        ''
+      : '') ||
+    ''
+  );
 }
 
 function getUserFirstName(eventData, userAddress, userInfoOverride, autoMapEnabled) {
