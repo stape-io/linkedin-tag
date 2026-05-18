@@ -147,7 +147,7 @@ function validateMappedData(postBody) {
     getType(postBody.user.userIds) === 'array' &&
     postBody.user.userIds.some((userId) => userId.idValue);
   if (!hasUserIds) {
-    return 'User IDs are missing. Set at least one of the following IDs (Email, LinkedIn First Party Ads Tracking UUID, ACXIOM ID, Oracle MOAT ID).';
+    return 'User IDs are missing. Set at least one of the following IDs (Email, LinkedIn First Party Ads Tracking UUID, ACXIOM ID, Oracle MOAT ID, IP Address or Google Advertising ID).';
   }
 
   const hasUserInfo =
@@ -392,27 +392,20 @@ function getOracleMoatId(eventData, userIdsOverride, autoMapEnabled) {
 }
 
 function getIpAddress(eventData, userIdsOverride, autoMapEnabled) {
-  return (
-    userIdsOverride.ipAddress ||
-    (autoMapEnabled
-      ? eventData.ip_override ||
-        (eventData.user_data || {}).ip_address ||
-        ''
-      : '') ||
-    ''
-  );
+  const ip = userIdsOverride.ipAddress || (autoMapEnabled ? eventData.ip_override : '') || '';
+  return isValidIpv4(ip) ? ip : '';
 }
 
 function getGoogleAid(eventData, userIdsOverride, autoMapEnabled) {
-  return (
+  const platform = (eventData['x-ga-platform'] || '').toLowerCase();
+  const gaid =
     userIdsOverride.googleAid ||
-    (autoMapEnabled
-      ? (eventData.user_data || {}).google_aid ||
-        (eventData.user_data || {}).gaid ||
-        ''
+    (autoMapEnabled && platform === 'android'
+      ? eventData['x-ga-resettable_device_id'] || ''
       : '') ||
-    ''
-  );
+    '';
+
+  return gaid !== '00000000-0000-0000-0000-000000000000' ? gaid : '';
 }
 
 function getUserFirstName(eventData, userAddress, userInfoOverride, autoMapEnabled) {
@@ -582,6 +575,12 @@ function itemizeInput(input) {
     input = input.map((p) => makeString(p).trim()).filter((p) => p);
   }
   return input;
+}
+
+function isValidIpv4(ip) {
+  const ipv4Regex =
+    '^(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)$';
+  return makeString(ip).match(ipv4Regex) !== null;
 }
 
 function log(rawDataToLog) {

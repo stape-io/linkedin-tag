@@ -227,7 +227,7 @@ ___TEMPLATE_PARAMETERS___
             "name": "autoMapUserIds",
             "checkboxText": "Automap User IDs",
             "simpleValueType": true,
-            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eEmail:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.sha256_email_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLinkedIn First Party Ads Tracking UUID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e URL parameter\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e cookie\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.common_cookie.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.linkedinFirstPartyId\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eACXIOM ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.acxiomID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eOracle MOAT ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.moatID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ePlaintext IP Address:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.ip_override\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.ip_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eGoogle Advertising ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.google_aid\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.gaid\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
+            "help": "If enabled, the tag will attempt to automatically map parameters from your event data.\n\u003cbr/\u003e\u003cbr/\u003e\nAny value you manually enter in a field below will always override the auto-mapped value.\n\u003cbr/\u003e\u003cbr/\u003e\nDefault mappings:\n\u003cul\u003e\n\u003cli\u003eEmail:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.email_address\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.sha256_email_address\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eLinkedIn First Party Ads Tracking UUID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e URL parameter\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eli_fat_id\u003c/i\u003e cookie\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.common_cookie.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.li_fat_id\u003c/i\u003e\u003c/li\u003e\n\u003cli\u003e\u003ci\u003eeventData.user_data.linkedinFirstPartyId\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eACXIOM ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.acxiomID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eOracle MOAT ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.moatID\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003ePlaintext IP Address IPv4:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.ip_override\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003cli\u003eGoogle Advertising ID:\n\u003cul\u003e\n\u003cli\u003e\u003ci\u003eeventData.x-ga-resettable_device_id\u003c/i\u003e\u003c/li\u003e\n\u003c/ul\u003e\n\u003c/li\u003e\n\u003c/ul\u003e",
             "defaultValue": true
           },
           {
@@ -263,11 +263,11 @@ ___TEMPLATE_PARAMETERS___
                   },
                   {
                     "value": "ipAddress",
-                    "displayValue": "Plaintext IP Address (IPv4 only — LinkedIn hashes server-side)"
+                    "displayValue": "Plaintext IP Address (IPv4 only)"
                   },
                   {
                     "value": "googleAid",
-                    "displayValue": "Google Advertising ID (Android)"
+                    "displayValue": "Google Advertising ID (GAID/AAID)"
                   }
                 ]
               },
@@ -607,7 +607,7 @@ function validateMappedData(postBody) {
     getType(postBody.user.userIds) === 'array' &&
     postBody.user.userIds.some((userId) => userId.idValue);
   if (!hasUserIds) {
-    return 'User IDs are missing. Set at least one of the following IDs (Email, LinkedIn First Party Ads Tracking UUID, ACXIOM ID, Oracle MOAT ID).';
+    return 'User IDs are missing. Set at least one of the following IDs (Email, LinkedIn First Party Ads Tracking UUID, ACXIOM ID, Oracle MOAT ID, IP Address or Google Advertising ID).';
   }
 
   const hasUserInfo =
@@ -852,27 +852,20 @@ function getOracleMoatId(eventData, userIdsOverride, autoMapEnabled) {
 }
 
 function getIpAddress(eventData, userIdsOverride, autoMapEnabled) {
-  return (
-    userIdsOverride.ipAddress ||
-    (autoMapEnabled
-      ? eventData.ip_override ||
-        (eventData.user_data || {}).ip_address ||
-        ''
-      : '') ||
-    ''
-  );
+  const ip = userIdsOverride.ipAddress || (autoMapEnabled ? eventData.ip_override : '') || '';
+  return isValidIpv4(ip) ? ip : '';
 }
 
 function getGoogleAid(eventData, userIdsOverride, autoMapEnabled) {
-  return (
+  const platform = (eventData['x-ga-platform'] || '').toLowerCase();
+  const gaid =
     userIdsOverride.googleAid ||
-    (autoMapEnabled
-      ? (eventData.user_data || {}).google_aid ||
-        (eventData.user_data || {}).gaid ||
-        ''
+    (autoMapEnabled && platform === 'android'
+      ? eventData['x-ga-resettable_device_id'] || ''
       : '') ||
-    ''
-  );
+    '';
+
+  return gaid !== '00000000-0000-0000-0000-000000000000' ? gaid : '';
 }
 
 function getUserFirstName(eventData, userAddress, userInfoOverride, autoMapEnabled) {
@@ -1042,6 +1035,12 @@ function itemizeInput(input) {
     input = input.map((p) => makeString(p).trim()).filter((p) => p);
   }
   return input;
+}
+
+function isValidIpv4(ip) {
+  const ipv4Regex =
+    '^(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)\\.(25[0-5]|2[0-4]\\d|1\\d{2}|[1-9]\\d|\\d)$';
+  return makeString(ip).match(ipv4Regex) !== null;
 }
 
 function log(rawDataToLog) {
@@ -1451,6 +1450,11 @@ setup: |-
 
 ___NOTES___
 
+2026-05-18 - Change Notes:
+  - Add IPv4 Address auto-mapping.
+  - Add Google Advertising ID auto-mapping to use x-ga-resettable_device_id (Android GAID/AAID) via the x-ga-platform field
+  - Update error message for missing user IDs to include IP Address and Google Advertising ID in the list of accepted identifiers
+
 2026-04-21 - Change Notes:
   - Add "Enable PageView from the Browser" option to the Page View event type: sends a pixel from the browser to LinkedIn's pixel endpoint using configured Partner IDs, enabling audience building via third-party cookies and first-party Click ID
   - Add per-section auto-mapping controls for Event Data, User IDs, and User Info, allowing each to be individually disabled; all default to enabled for backward compatibility with existing configurations
@@ -1460,4 +1464,3 @@ ___NOTES___
   - Bump LinkedIn API version from 202601 to 202604
 
 Created on 18/08/2022, 12:25:26
-
