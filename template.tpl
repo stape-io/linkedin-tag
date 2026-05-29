@@ -412,46 +412,6 @@ ___TEMPLATE_PARAMETERS___
         "defaultValue": "optional"
       }
     ]
-  },
-  {
-    "displayName": "Logs Settings",
-    "name": "logsGroup",
-    "groupStyle": "ZIPPY_CLOSED",
-    "type": "GROUP",
-    "subParams": [
-      {
-        "type": "RADIO",
-        "name": "logType",
-        "radioItems": [
-          {
-            "value": "no",
-            "displayValue": "Do not log"
-          },
-          {
-            "value": "debug",
-            "displayValue": "Log to console during debug and preview"
-          },
-          {
-            "value": "always",
-            "displayValue": "Always log to console"
-          }
-        ],
-        "simpleValueType": true,
-        "defaultValue": "debug"
-      }
-    ],
-    "enablingConditions": [
-      {
-        "paramName": "type",
-        "paramValue": "conversion",
-        "type": "EQUALS"
-      },
-      {
-        "paramName": "enablePageViewFromBrowser",
-        "paramValue": true,
-        "type": "EQUALS"
-      }
-    ]
   }
 ]
 
@@ -461,7 +421,6 @@ ___SANDBOXED_JS_FOR_SERVER___
 const encodeUriComponent = require('encodeUriComponent');
 const getAllEventData = require('getAllEventData');
 const getCookieValues = require('getCookieValues');
-const getContainerVersion = require('getContainerVersion');
 const getRequestHeader = require('getRequestHeader');
 const getTimestampMillis = require('getTimestampMillis');
 const getType = require('getType');
@@ -491,7 +450,7 @@ let gtmOnFailure = () => {
 /*==============================================================================
 ==============================================================================*/
 
-const API_VERSION = '202604';
+const API_VERSION = '202605';
 const eventData = getAllEventData();
 
 if (shouldExitEarly(data, eventData)) return;
@@ -623,27 +582,9 @@ function validateMappedData(postBody) {
 }
 
 function sendConversionToLinkedIn(data, postUrl, postBody, postHeaders) {
-  log({
-    Name: 'LinkedIn',
-    Type: 'Request',
-    EventName: data.type,
-    RequestMethod: 'POST',
-    RequestUrl: postUrl,
-    RequestBody: postBody
-  });
-
   sendHttpRequest(
     postUrl,
     (statusCode, headers, body) => {
-      log({
-        Name: 'LinkedIn',
-        Type: 'Response',
-        EventName: data.type,
-        ResponseStatusCode: statusCode,
-        ResponseHeaders: headers,
-        ResponseBody: body
-      });
-
       if (!data.useOptimisticScenario) {
         return statusCode >= 200 && statusCode < 300 ? gtmOnSuccess() : gtmOnFailure();
       }
@@ -1045,33 +986,7 @@ function isValidIpv4(ip) {
 
 function log(rawDataToLog) {
   rawDataToLog.TraceId = getRequestHeader('trace-id');
-  if (determinateIsLoggingEnabled()) logConsole(rawDataToLog);
-}
-
-function logConsole(dataToLog) {
-  logToConsole(JSON.stringify(dataToLog));
-}
-
-function determinateIsLoggingEnabled() {
-  const containerVersion = getContainerVersion();
-  const isDebug = !!(
-    containerVersion &&
-    (containerVersion.debugMode || containerVersion.previewMode)
-  );
-
-  if (!data.logType) {
-    return isDebug;
-  }
-
-  if (data.logType === 'no') {
-    return false;
-  }
-
-  if (data.logType === 'debug') {
-    return isDebug;
-  }
-
-  return data.logType === 'always';
+  logToConsole(JSON.stringify(rawDataToLog));
 }
 
 
@@ -1176,16 +1091,6 @@ ___SERVER_PERMISSIONS___
     },
     "clientAnnotations": {
       "isEditedByUser": true
-    },
-    "isRequired": true
-  },
-  {
-    "instance": {
-      "key": {
-        "publicId": "read_container_data",
-        "versionId": "1"
-      },
-      "param": []
     },
     "isRequired": true
   },
@@ -1450,6 +1355,9 @@ setup: |-
 
 ___NOTES___
 
+2026-05-25 Change Notes:
+ - Logging removal.
+
 2026-05-18 - Change Notes:
   - Add IPv4 Address auto-mapping.
   - Add Google Advertising ID auto-mapping to use x-ga-resettable_device_id (Android GAID/AAID) via the x-ga-platform field
@@ -1464,3 +1372,4 @@ ___NOTES___
   - Bump LinkedIn API version from 202601 to 202604
 
 Created on 18/08/2022, 12:25:26
+
