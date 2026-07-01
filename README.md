@@ -25,7 +25,7 @@ All overrides take precedence over auto-mapped values:
 - **User Info** — First Name, Last Name, Job Title, Company Name, Country Code
 - **External IDs** — external identifiers linked to users
 
-## Useful links
+## Useful Resources
 
 - [LinkedIn Conversion API tag in the Template Gallery](https://tagmanager.google.com/gallery/#/owners/stape-io/templates/linkedin-tag)
 - [LinkedIn Conversion API Tag for server GTM step-by-step guide](https://stape.io/blog/linkedin-conversion-api-tag-for-server-google-tag-manager)

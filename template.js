@@ -1,7 +1,6 @@
 const encodeUriComponent = require('encodeUriComponent');
 const getAllEventData = require('getAllEventData');
 const getCookieValues = require('getCookieValues');
-const getContainerVersion = require('getContainerVersion');
 const getRequestHeader = require('getRequestHeader');
 const getTimestampMillis = require('getTimestampMillis');
 const getType = require('getType');
@@ -31,7 +30,7 @@ let gtmOnFailure = () => {
 /*==============================================================================
 ==============================================================================*/
 
-const API_VERSION = '202604';
+const API_VERSION = '202605';
 const eventData = getAllEventData();
 
 if (shouldExitEarly(data, eventData)) return;
@@ -163,27 +162,9 @@ function validateMappedData(postBody) {
 }
 
 function sendConversionToLinkedIn(data, postUrl, postBody, postHeaders) {
-  log({
-    Name: 'LinkedIn',
-    Type: 'Request',
-    EventName: data.type,
-    RequestMethod: 'POST',
-    RequestUrl: postUrl,
-    RequestBody: postBody
-  });
-
   sendHttpRequest(
     postUrl,
     (statusCode, headers, body) => {
-      log({
-        Name: 'LinkedIn',
-        Type: 'Response',
-        EventName: data.type,
-        ResponseStatusCode: statusCode,
-        ResponseHeaders: headers,
-        ResponseBody: body
-      });
-
       if (!data.useOptimisticScenario) {
         return statusCode >= 200 && statusCode < 300 ? gtmOnSuccess() : gtmOnFailure();
       }
@@ -585,31 +566,5 @@ function isValidIpv4(ip) {
 
 function log(rawDataToLog) {
   rawDataToLog.TraceId = getRequestHeader('trace-id');
-  if (determinateIsLoggingEnabled()) logConsole(rawDataToLog);
-}
-
-function logConsole(dataToLog) {
-  logToConsole(JSON.stringify(dataToLog));
-}
-
-function determinateIsLoggingEnabled() {
-  const containerVersion = getContainerVersion();
-  const isDebug = !!(
-    containerVersion &&
-    (containerVersion.debugMode || containerVersion.previewMode)
-  );
-
-  if (!data.logType) {
-    return isDebug;
-  }
-
-  if (data.logType === 'no') {
-    return false;
-  }
-
-  if (data.logType === 'debug') {
-    return isDebug;
-  }
-
-  return data.logType === 'always';
+  logToConsole(JSON.stringify(rawDataToLog));
 }
